@@ -1,0 +1,59 @@
+/* d:/Uraan/client/src/pages/HomePage.css */
+
+.home-page-container {
+  /* This container might not need specific styles if .main-content handles padding */
+  /* but it's good for semantic structure */
+}
+
+.loading-message,
+.error-message,
+.no-competitions-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-color-secondary);
+}
+
+.error-message {
+  color: #d32f2f; /* A standard error red */
+  background-color: #ffebee;
+  border: 1px solid #d32f2f;
+  border-radius: var(--border-radius-md);
+  margin: 1rem auto;
+  max-width: 600px;
+}
+
+.competitions-section {
+  padding: 2rem 1rem; /* Add some padding around the competitions list */
+  max-width: 1200px; /* Optional: constrain width for larger screens */
+  margin: 0 auto; /* Center the section */
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: var(--text-color-primary);
+  margin-bottom: 2rem;
+  font-family: var(--font-heading);
+}
+
+.competitions-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 1.5rem; /* Space between cards */
+}
+
+.status-tag {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.85em;
+  font-weight: bold;
+  border-radius: var(--border-radius-sm);
+  color: white;
+  background-color: var(--text-color-secondary); /* Default status color */
+}
+
+.status-tag.status-upcoming { background-color: #2196f3; /* Blue for upcoming */ }
+.status-tag.status-ongoing { background-color: #4caf50; /* Green for ongoing */ }
+.status-tag.status-completed { background-color: #f44336; /* Red for completed */ }
+.status-tag.status-live { background-color: var(--accent-color); color: var(--text-color-primary); } /* Yellow for live */

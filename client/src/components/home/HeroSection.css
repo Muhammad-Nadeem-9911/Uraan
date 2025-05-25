@@ -1,0 +1,135 @@
+/* d:/Uraan/client/src/components/home/HeroSection.css */
+.hero-carousel .slick-slide > div {
+  /* Fix for react-slick sometimes adding extra div that messes with height */
+  height: 100%;
+}
+
+.hero-section, /* For static fallback */
+.hero-slide-item,
+.hero-loading {
+  position: relative;
+  height: 70vh; /* Adjust height as needed, e.g., 60vh, 80vh, or 500px */
+  min-height: 400px;
+  background-attachment: fixed; /* This creates the parallax effect */
+  background-image: url('https://images.unsplash.com/photo-1599249003989-iel72619f97a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'); /* Placeholder pigeon/sky image */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--background-color-light); /* Text color that contrasts with a potentially dark overlay/image */
+}
+
+.hero-slide-link-wrapper {
+  display: block; /* Make the link a block element */
+  width: 100%;
+  height: 100%;
+  text-decoration: none; /* Remove underline from link */
+}
+
+.hero-slide-background {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative; /* For overlay and content positioning */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.20) 100%); /* Subtle overlay for better image visibility */
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2; /* Ensure content is above the overlay */
+  padding: 2rem;
+  /* If you want to re-add a generic CTA or site name on all slides, do it here */
+  /* display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; */
+
+}
+
+.hero-logo-text,
+.hero-slide-title {
+  font-family: var(--font-heading);
+  font-size: 3.5rem; /* Adjust size */
+  font-weight: 700;
+  /* color: var(--background-color-light); */ /* Removed as title is gone */
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* Subtle shadow for readability */
+  line-height: 1.2;
+}
+
+.hero-tagline,
+.hero-slide-caption {
+  font-family: var(--font-body);
+  font-size: 1.5rem; /* Adjust size */
+  margin-bottom: 2rem;
+  /* color: var(--background-color-light-alt); */ /* Removed as caption is gone */
+  font-weight: 400;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  max-width: 700px; /* Prevent tagline from being too wide */
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+
+/* CTA button styling is removed from here as it's no longer a generic button on each slide */
+/* If you decide to add a generic button back into .hero-content, you can re-add these styles */
+/*
+.hero-cta-button { ... }
+.hero-cta-button:hover { ... }
+*/
+
+/* If you want some minimal content like your site logo/name on every slide,
+   you can add it back into the .hero-content div in HeroSection.jsx
+   and style it here. For example: */
+/*
+.hero-content .site-identifier-on-slide {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  z-index: 3;
+}
+*/
+
+/* react-slick specific overrides if needed */
+.hero-carousel .slick-dots li button:before {
+  font-size: 10px; /* Adjust dot size */
+  color: white; /* Dot color */
+  opacity: 0.5;
+}
+
+.hero-carousel .slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: var(--primary-color, #00aaff); /* Active dot color */
+}
+
+.hero-carousel .slick-prev,
+.hero-carousel .slick-next {
+  z-index: 3; /* Ensure arrows are above content */
+  width: 40px;
+  height: 40px;
+}
+.hero-carousel .slick-prev:before,
+.hero-carousel .slick-next:before {
+  font-size: 30px; /* Adjust arrow size */
+  color: white; /* Arrow color */
+  opacity: 0.7;
+}
+.hero-carousel .slick-prev:hover:before,
+.hero-carousel .slick-next:hover:before {
+  opacity: 1;
+}

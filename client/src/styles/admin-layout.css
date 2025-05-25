@@ -1,0 +1,5 @@
+/* d:\Uraan\client\src\styles\admin-layout.css */
+/* This file can hold shared layout variables or styles for the admin panel */
+:root {
+  --admin-navbar-height: 60px; /* Adjust this value based on your AdminNavbar's actual height */
+}

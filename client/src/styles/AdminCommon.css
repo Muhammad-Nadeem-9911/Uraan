@@ -1,0 +1,102 @@
+/* d:\Uraan\client\src\styles\AdminCommon.css */
+
+/* Base Button Style */
+.button {
+  display: inline-block;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  line-height: 1.5;
+}
+
+.button:hover:not(:disabled) { /* Ensure hover effect doesn't apply to disabled buttons */
+  opacity: 0.9;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Primary Button */
+.primary-button {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.primary-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark); /* Define in global.css if not already */
+  border-color: var(--primary-color-dark);
+}
+
+/* Secondary Button (e.g., for Logout or less prominent actions) */
+.secondary-button {
+  background-color: var(--background-color-light-alt);
+  color: var(--text-color-primary);
+  border: 1px solid #ccc; /* Softer border */
+}
+
+.secondary-button:hover:not(:disabled) {
+  background-color: #e0e0e0; /* Slightly darker on hover */
+  border-color: #bbb;
+}
+
+/* Danger Button (e.g., for Delete) */
+.danger-button {
+  background-color: #dc3545; /* Standard danger red */
+  color: white;
+  border-color: #dc3545;
+}
+
+.danger-button:hover:not(:disabled) {
+  background-color: #c82333; /* Darker red */
+  border-color: #bd2130;
+}
+
+/* Small Button Modifier */
+.small-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+/* Button Link (looks like a link but can be a button or Link component) */
+.button-link {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: none;
+  padding: 0; /* Reset padding for link-like appearance */
+  text-decoration: underline;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: normal; /* Links are usually not bold by default */
+}
+
+.button-link:hover:not(:disabled) {
+  color: var(--primary-color-dark);
+  opacity: 1; /* Full opacity on hover for links */
+}
+
+/* Specific placement for logout button if needed */
+.logout-button {
+  /* Example: if you want it to align differently in the header */
+  /* margin-left: auto; */ /* Pushes it to the right if header is flex */
+}
+
+/* Action links within list items/table cells */
+.edit-link, .participants-link {
+  margin-right: 0.75rem; /* Keep some spacing */
+}
+
+/* For buttons inside summary cards that need to be full width */
+.summary-card .button.full-width-button {
+    width: 100%;
+    margin-top: auto; /* Push button to bottom */
+}

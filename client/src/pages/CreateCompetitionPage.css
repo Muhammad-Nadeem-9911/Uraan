@@ -1,0 +1,114 @@
+/* d:\Uraan\client\src\pages\CreateCompetitionPage.css */
+
+.create-competition-page {
+  max-width: 800px; /* Or your preferred max-width for forms */
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.create-competition-page h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: var(--text-color-primary);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
+  gap: 1.5rem; /* Space between the two form groups in a row */
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  flex: 1; /* Each form group takes equal space in the row */
+  min-width: calc(50% - 0.75rem); /* Ensure it takes roughly half, accounting for gap */
+}
+
+.form-group.full-width {
+  flex-basis: 100%; /* Makes the form group take the full width of the row */
+  min-width: 100%;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="number"],
+.form-group input[type="url"],
+.form-group input[type="file"], /* Added file input for consistent styling */
+.form-group select, /* Added select for consistent styling */
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--text-color-primary);
+  background-color: var(--background-color-light-alt);
+  border: 1px solid var(--form-input-border-color, #ccc); /* Use CSS variable */
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+
+/* Specific styling for select to remove default appearance and allow custom styling */
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Add a custom arrow or use a library if you want a consistent dropdown arrow */
+  /* background-image: url('path-to-your-custom-arrow.svg'); */
+  /* background-repeat: no-repeat; */
+  /* background-position: right 1rem center; */
+  /* background-size: 1em; */
+  /* padding-right: 2.5rem; /* Make space for the custom arrow */
+}
+
+.form-group input:focus,
+.form-group select:focus, /* Added select for consistent focus styling */
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb, 0, 170, 255), 0.25); /* Ensure --primary-color-rgb is defined globally */
+}
+
+/* For --primary-color-rgb, add to global.css if not there:
+   --primary-color-rgb: 0, 170, 255; // Corresponding to #00aaff
+*/
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 1rem;
+}
+
+.form-error-message {
+  color: var(--form-error-text-color, #dc3545); /* Use CSS variable; consider standardizing with other error colors like #d32f2f */
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: left; /* Or center if preferred */
+}
+
+/* Responsive adjustments for form rows on smaller screens */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column; /* Stack form groups vertically */
+    gap: 0; /* Remove horizontal gap, rely on form-group margin-bottom */
+  }
+  .form-group {
+    min-width: 100%; /* Full width on smaller screens */
+    margin-bottom: 1.5rem; /* Ensure margin-bottom is present when stacked */
+  }
+}

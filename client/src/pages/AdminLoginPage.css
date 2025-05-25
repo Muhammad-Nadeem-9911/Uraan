@@ -1,0 +1,118 @@
+/* d:\Uraan\client\src\pages\AdminLoginPage.css */
+
+.admin-login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh; /* Increased slightly for better centering */
+  padding: 2rem;
+  background-color: var(--background-color-body);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px; /* Slightly wider */
+  padding: 2.5rem; /* Increased padding */
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-xl, 12px); /* Larger radius for a softer look */
+  box-shadow: var(--box-shadow-xl, 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)); /* More pronounced shadow */
+  text-align: center;
+}
+
+.login-header {
+  margin-bottom: 2rem; /* Space between header and form */
+}
+
+.login-logo {
+  /* Placeholder for a logo - replace with your <img> tag or SVG */
+  /* Example: */
+  /* width: 80px; */
+  /* height: 80px; */
+  /* background-image: url('/path-to-your-logo.svg'); */
+  /* background-size: contain; */
+  /* background-repeat: no-repeat; */
+  /* background-position: center; */
+  /* margin: 0 auto 1.5rem; */
+}
+
+.login-container h2 {
+  color: var(--text-color-primary); /* Standard text color for heading */
+  font-family: var(--font-heading);
+  font-size: 1.8rem; /* Slightly larger title */
+  margin-top: 0; /* Remove top margin if logo is present */
+  margin-bottom: 0; /* Title is part of login-header */
+}
+
+.login-form .form-group {
+  margin-bottom: 1.25rem; /* Adjusted spacing */
+  text-align: left;
+}
+
+.login-form .form-group label {
+  display: block;
+  margin-bottom: 0.6rem; /* Slightly more space */
+  font-weight: 600; /* Slightly bolder */
+  color: var(--text-color-secondary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.login-form .form-group input {
+  width: 100%;
+  padding: 0.85rem 1rem; /* Slightly taller inputs */
+  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--text-color-primary);
+  background-color: var(--background-color-light-alt);
+  border: 1px solid var(--form-input-border-color, #ccc);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.login-form .form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2); /* Slightly larger focus shadow */
+}
+
+/* This can be removed if all errors are handled by toast notifications */
+.login-form .form-error-message {
+  color: var(--form-error-text-color, #d32f2f);
+  font-size: 0.9rem;
+  margin-top: -0.5rem; /* Pull up slightly if it's below an input */
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.05); /* Use RGB for opacity */
+  border: 1px solid rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.2);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.login-form .submit-button {
+  width: 100%;
+  padding: 0.9rem 1.5rem; /* Taller button */
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform 0.1s ease-out;
+  margin-top: 0.5rem; /* Add some space above the button if error message is removed */
+}
+
+.login-form .submit-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-1px); /* Subtle lift on hover */
+}
+.login-form .submit-button:active:not(:disabled) {
+  transform: translateY(0px); /* Press down effect */
+}
+
+.login-form .submit-button:disabled {
+  background-color: var(--neutral-color-light, #ccc); /* Use theme variable */
+  color: var(--neutral-color-dark, #666);
+  cursor: not-allowed;
+}

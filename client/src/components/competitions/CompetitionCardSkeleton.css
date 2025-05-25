@@ -1,0 +1,64 @@
+/* d:/Uraan/client/src/components/competitions/CompetitionCardSkeleton.css */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.competition-card-skeleton {
+  /* Mimic CompetitionCard's glassmorphism, but simpler and opaque */
+  background: rgba(224, 224, 224, 0.3); /* Lighter grey, slightly transparent */
+  border-radius: var(--border-radius-lg, 12px);
+  /* backdrop-filter: blur(5px); */ /* Optional: lighter blur for skeleton */
+  /* -webkit-backdrop-filter: blur(5px); */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: auto; /* Or match CompetitionCard height if fixed: approx 300px-350px depending on content */
+  min-height: 280px; /* Approximate height of a card */
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 160px; /* Match CompetitionCard image height or adjust */
+  background: linear-gradient(to right, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
+  background-size: 2000px 100%; /* Large background for shimmer effect */
+  animation: shimmer 1.5s linear infinite;
+}
+
+.skeleton-content {
+  padding: 1rem 1.25rem;
+  flex-grow: 1;
+}
+
+.skeleton-line {
+  height: 1em;
+  margin-bottom: 0.75em;
+  border-radius: var(--border-radius-sm, 4px);
+  background: linear-gradient(to right, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
+  background-size: 2000px 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.skeleton-line.title {
+  width: 70%;
+  height: 1.3em; /* Match card title size */
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+.skeleton-line.medium {
+  width: 80%;
+}
+
+.skeleton-line.footer {
+  width: 30%;
+  margin-top: auto; /* Push to bottom if content area allows */
+}

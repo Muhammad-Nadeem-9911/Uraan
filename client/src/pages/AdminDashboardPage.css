@@ -1,0 +1,228 @@
+/* d:/Uraan/client/src/pages/AdminDashboardPage.css */
+
+.admin-dashboard-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  /* background-color: var(--background-color-light-alt); */ /* Optional: slightly different bg for admin area */
+}
+
+.admin-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--background-color-light-alt); /* Use theme variable */
+}
+
+.admin-dashboard-header h1 {
+  font-size: 2.2rem;
+  color: var(--text-color-primary);
+  font-family: var(--font-heading);
+}
+
+.admin-dashboard-header .admin-welcome-message { /* Target welcome message specifically within header */
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+  margin: 0 1rem; /* Add some spacing */
+  flex-grow: 1; /* Allow it to take available space if header items wrap */
+}
+
+.admin-dashboard-header .logout-button { 
+  /* Target logout button specifically within header */
+  /* margin-left: auto; */ /* This would push it to the far right if not for space-between */
+  /* The secondary-button styles from AdminCommon.css will apply */
+
+}
+
+/* Adjustments for smaller screens if header items wrap */
+@media (max-width: 600px) {
+  .admin-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .admin-dashboard-header .admin-welcome-message,
+  .admin-dashboard-header .logout-button {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Summary Cards Section */
+.admin-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive cards */
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary-card {
+  background-color: var(--background-color-light);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.summary-card-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.summary-card-link {
+  margin-top: auto; /* Pushes link to the bottom of the card */
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.summary-card-link:hover {
+  text-decoration: underline;
+}
+
+.summary-card .button.full-width-button { /* For buttons inside cards to take full width */
+    width: 100%;
+    margin-top: auto; /* Push button to bottom */
+}
+
+.admin-section {
+  margin-bottom: 2.5rem;
+  background-color: var(--background-color-light);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+}
+
+.admin-section-title {
+  font-size: 1.6rem;
+  color: var(--text-color-primary);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-heading);
+  border-bottom: 1px solid var(--background-color-light-alt);
+  padding-bottom: 0.75rem;
+}
+
+/* Placeholder for action buttons or links */
+.admin-actions a,
+.admin-actions button {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  /* We can create a more specific .admin-button class later */
+}
+
+/* Admin Table Styling */
+.admin-table-container {
+  overflow-x: auto; /* For responsive tables */
+  margin-top: 1.5rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0; /* Lighter border for admin tables */
+  vertical-align: middle;
+}
+
+.admin-table th {
+  background-color: var(--background-color-light-alt);
+  font-weight: 600;
+  font-family: var(--font-heading);
+  color: var(--text-color-primary);
+  white-space: nowrap;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f9f9f9; /* Very subtle hover */
+}
+
+.competition-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Space between action buttons/links */
+  white-space: nowrap; /* Prevent actions from wrapping if possible */
+}
+
+/* Styling for icon-based action buttons in table */
+.action-icon-button {
+  background: none;
+  border: none;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  padding: 0.5rem; /* Add some padding for easier clicking */
+  font-size: 1.1rem; /* Adjust icon size */
+  display: inline-flex; /* Helps with alignment */
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.action-icon-button:hover:not(:disabled) {
+  color: var(--primary-color);
+  background-color: var(--background-color-light-alt); /* Subtle hover background */
+}
+
+.action-icon-button.delete-icon:hover:not(:disabled) {
+  color: #dc3545; /* Danger color on hover for delete */
+}
+
+.action-icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments for the table (optional, can be expanded) */
+@media (max-width: 768px) {
+  .admin-table thead {
+    display: none; /* Hide table headers on small screens */
+  }
+  .admin-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem;
+  }
+  .admin-table td {
+    display: block;
+    text-align: right; /* Align content to the right */
+    border-bottom: none; /* Remove bottom border for stacked cells */
+    padding-left: 50%; /* Create space for the label */
+    position: relative;
+  }
+  .admin-table td::before {
+    content: attr(data-label); /* Use data-label for pseudo-header */
+    position: absolute;
+    left: 0.75rem;
+    width: 45%;
+    padding-right: 0.5rem;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .competition-item-actions {
+    justify-content: flex-end; /* Align actions to the right in stacked view */
+    padding-top: 0.5rem;
+  }
+}

@@ -1,0 +1,49 @@
+/* d:\Uraan\client\src\components\layout\AdminNavbar.css */
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Use the CSS variable for height, padding adjusts content within this height */
+  min-height: var(--admin-navbar-height, 60px); /* Fallback if variable isn't defined */
+  padding: 0 1.5rem; /* Horizontal padding */
+  background-color: var(--dark-mode-background, #0b192e);
+  color: var(--dark-mode-text, #e6f1ff);
+  border-bottom: 1px solid var(--primary-color, #00aaff);
+  box-sizing: border-box;
+}
+
+.admin-navbar-brand {
+  text-decoration: none;
+  color: var(--primary-color, #00aaff);
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.admin-navbar-menu {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.admin-navbar-link {
+  text-decoration: none;
+  color: var(--dark-mode-text, #e6f1ff);
+  transition: color var(--transition-fast);
+}
+.admin-navbar-link:hover {
+  color: var(--primary-color-light, #66ccff); /* Example hover color */
+}
+
+.admin-navbar-button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--primary-color, #00aaff);
+  border-radius: var(--border-radius-sm, 4px);
+  background-color: transparent;
+  color: var(--primary-color, #00aaff);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.admin-navbar-button:hover {
+  background-color: var(--primary-color, #00aaff);
+  color: var(--dark-mode-background, white); /* Adjust text color on hover for contrast */
+}

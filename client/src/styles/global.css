@@ -1,0 +1,100 @@
+/* d:/Uraan/client/src/styles/global.css */
+
+/* 1. Font Imports (from Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+/* 2. CSS Custom Properties (Variables) */
+:root {
+  /* Color Palette */
+  --primary-color: #00aaff; /* Deep Sky Blue */
+  --primary-color-dark: #0088cc; /* A darker shade for hover */
+  --primary-color-rgb: 0, 170, 255; /* RGB version of primary color for rgba() usage */
+  --accent-color: #ffd700; /* Golden Yellow */
+  --background-color-light: #f7f9fc; /* Soft White */
+  --background-color-light-alt: #f0f2f5; /* Very Light Grey */
+  --text-color-primary: #333333; /* Charcoal */
+  --text-color-secondary: #555555; /* Soft Black for contrast */
+  --form-input-border-color: #ccc; /* Or another theme-appropriate light gray */
+  --form-error-text-color: #d32f2f; /* Standardizing with HomePage/CompetitionDetailPage error color */
+  --form-error-text-color-rgb: 211, 47, 47; /* RGB version of error color for rgba() */
+
+  /* Optional Dark Mode (placeholders, can be expanded later) */
+  --dark-mode-background: #0b192e; /* Example: Midnight Blue */
+  --dark-mode-text: #e6f1ff;    /* Example: Soft White/Light Blue */
+
+  /* Typography */
+  --font-heading: 'Poppins', 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', 'Roboto', sans-serif;
+
+  /* UI Style Elements */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px; /* For larger rounded corners, e.g., cards */
+  --box-shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --box-shadow-medium: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --box-shadow-large: 0 8px 24px rgba(0, 0, 0, 0.15); /* A bit more pronounced */
+  --box-shadow-xl: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); /* For prominent elements like login cards */
+
+  /* States & Neutrals */
+  --neutral-color-light: #e0e0e0;  /* Light gray for disabled states, borders */
+  --neutral-color-dark: #757575;   /* Darker gray for disabled text */
+
+  /* Transitions */
+  --transition-fast: all 0.2s ease-in-out;
+  --transition-normal: all 0.3s ease-in-out;
+}
+
+/* 3. Basic Reset & Body Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%; /* Ensure html element takes full viewport height */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color-primary);
+  background-color: var(--background-color-light);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; /* Make body at least full viewport height */
+}
+
+
+/* 4. Heading Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700; /* Bold by default for Poppins/Montserrat */
+  color: var(--text-color-primary);
+  margin-bottom: 0.75em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2.5rem; } /* Example sizes, adjust as needed */
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+
+/* 5. Basic Link Styling */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+button, .hero-cta-button, input[type="submit"] {
+  cursor: pointer; /* Ensure buttons use the standard pointer cursor */
+}

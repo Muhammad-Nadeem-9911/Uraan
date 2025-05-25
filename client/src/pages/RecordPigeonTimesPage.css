@@ -1,0 +1,152 @@
+/* d:\Uraan\client\src\pages\RecordPigeonTimesPage.css */
+
+.record-times-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.record-times-page .page-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--form-input-border-color, #eee);
+}
+
+.record-times-page .back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.record-times-page .back-link:hover {
+  text-decoration: underline;
+  color: var(--primary-color-dark);
+}
+
+.record-times-page h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading);
+  text-align: center;
+}
+
+.record-times-page .context-info {
+  text-align: center;
+  color: var(--text-color-secondary);
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.record-times-page .context-info strong {
+  color: var(--text-color-primary);
+}
+
+.record-times-page .competition-start-time {
+  text-align: center;
+  color: var(--text-color-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.record-times-form .pigeon-time-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--form-input-border-color, #e0e0e0);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background-color-light-alt);
+}
+
+.record-times-form .pigeon-time-entry label {
+  flex-basis: 200px; /* Adjust as needed */
+  font-weight: bold;
+  color: var(--text-color-secondary);
+}
+
+.record-times-form .pigeon-time-entry input[type="datetime-local"] {
+  flex-grow: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--form-input-border-color, #ccc);
+  border-radius: var(--border-radius-md);
+  background-color: white; /* Or var(--background-color-light) */
+}
+.record-times-form .pigeon-time-entry input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+}
+
+.record-times-form .form-error-message {
+  color: var(--form-error-text-color, #d32f2f);
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background-color: rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.05);
+  border: 1px solid rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.2);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.record-times-form .submit-button {
+  display: block;
+  width: 100%;
+  max-width: 300px; /* Or adjust as preferred */
+  margin: 1.5rem auto 0;
+  padding: 0.9rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+.record-times-form .submit-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+}
+.record-times-form .submit-button:disabled {
+  background-color: var(--neutral-color-light, #ccc);
+  color: var(--neutral-color-dark, #666);
+  cursor: not-allowed;
+}
+
+/* General page loading/error messages (shared with other pages) */
+.page-loading-message,
+.page-error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-color-secondary);
+}
+.page-error-message {
+  color: var(--form-error-text-color);
+  background-color: rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.1);
+  border: 1px solid rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.3);
+  border-radius: var(--border-radius-md);
+  margin: 1rem auto;
+}
+
+@media (max-width: 600px) {
+  .record-times-page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  .record-times-form .pigeon-time-entry {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .record-times-form .pigeon-time-entry label {
+    flex-basis: auto;
+    margin-bottom: 0.5rem;
+  }
+}

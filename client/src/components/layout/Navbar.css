@@ -1,0 +1,70 @@
+/* d:/Uraan/client/src/components/layout/Navbar.css */
+
+@keyframes logoFadeInGrow {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.navbar {
+  background-color: var(--background-color-light);
+  padding: 1rem 2rem; /* Adjust padding as needed */
+  box-shadow: var(--box-shadow-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--background-color-light-alt);
+  position: sticky; /* Makes navbar stick to top on scroll */
+  top: 0;
+  z-index: 1000; /* Ensures navbar stays on top of other content */
+  height: 70px; /* Example fixed height, adjust as needed */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-family: var(--font-heading);
+  font-size: 1.8rem; /* Slightly larger for brand */
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-fast); /* Only transition color for hover */
+  animation: logoFadeInGrow 0.8s ease-out 0.3s backwards; /* name duration timing-function delay fill-mode */
+}
+
+.navbar-logo:hover {
+  color: var(--accent-color);
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  margin-left: 2rem; /* Spacing between links */
+}
+
+.nav-link {
+  color: var(--text-color-primary);
+  text-decoration: none;
+  font-weight: 500; /* For Open Sans/Roboto, a bit more weight can be good for nav links */
+  padding: 0.5rem 0;
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+}

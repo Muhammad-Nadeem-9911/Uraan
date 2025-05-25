@@ -1,0 +1,16 @@
+/* d:\Uraan\client\src\components\layout\AdminPagesWrapper.css */
+.admin-pages-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows this wrapper to fill space if its parent is a flex container */
+  min-height: 0; /* Fix for flex children overflowing */
+}
+
+.admin-page-content-area {
+  padding-top: var(--admin-navbar-height, 60px); /* Use the CSS variable */
+  flex-grow: 1; /* Allows the content area to take up remaining vertical space */
+  overflow-y: auto; /* Add scroll to content area if it overflows */
+  padding-left: 1rem; /* Example content padding */
+  padding-right: 1rem;
+  padding-bottom: 1rem; /* Example content padding */
+}

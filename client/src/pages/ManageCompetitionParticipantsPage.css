@@ -1,0 +1,222 @@
+/* d:\Uraan\client\src\pages\ManageCompetitionParticipantsPage.css */
+
+.manage-participants-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.manage-participants-page .page-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--form-input-border-color, #eee);
+}
+
+.manage-participants-page .back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.manage-participants-page .back-link:hover {
+  text-decoration: underline;
+  color: var(--primary-color-dark);
+}
+
+.manage-participants-page h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading);
+  text-align: center;
+}
+
+.manage-participants-page .competition-date {
+  text-align: center;
+  color: var(--text-color-secondary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.section-divider {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border: 0;
+  border-top: 1px solid var(--form-input-border-color, #eee);
+}
+
+.add-participant-section,
+.current-participants-section {
+  margin-bottom: 2rem;
+}
+
+.add-participant-section h3,
+.current-participants-section h3 {
+  color: var(--text-color-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.add-participant-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.add-participant-form .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--text-color-secondary);
+}
+
+.add-participant-form .form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--form-input-border-color, #ccc);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background-color-light-alt);
+}
+.add-participant-form .form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+}
+
+.add-participant-form .form-error-message,
+.page-error-message-inline {
+  color: var(--form-error-text-color, #d32f2f);
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background-color: rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.05);
+  border: 1px solid rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.2);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.add-participant-form .submit-button {
+  padding: 0.8rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+.add-participant-form .submit-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+}
+.add-participant-form .submit-button:disabled {
+  background-color: var(--neutral-color-light, #ccc);
+  color: var(--neutral-color-dark, #666);
+  cursor: not-allowed;
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--form-input-border-color, #eee);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 0.75rem;
+  background-color: var(--background-color-light-alt);
+}
+
+.participant-item .participant-name {
+  font-weight: 500;
+  color: var(--text-color-primary);
+}
+
+.participant-item .actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.participant-item .action-button,
+.participant-item .action-link {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.participant-item .edit-link {
+  background-color: var(--accent-color);
+  color: var(--text-color-primary); /* Or white if accent is dark */
+}
+.participant-item .edit-link:hover {
+  background-color: #e6c300; /* Darker accent */
+}
+
+.participant-item .delete-button {
+  background-color: var(--form-error-text-color);
+  color: white;
+  border: none;
+}
+.participant-item .delete-button:hover:not(:disabled) {
+  background-color: #a02424; /* Darker error color */
+}
+
+.participant-item .record-times-link {
+  background-color: var(--primary-color-dark);
+  color: white;
+}
+.participant-item .record-times-link:hover {
+  background-color: var(--primary-color);
+}
+
+.participant-item .action-button:disabled {
+  background-color: var(--neutral-color-light, #ccc);
+  color: var(--neutral-color-dark, #666);
+  cursor: not-allowed;
+}
+
+/* General page loading/error messages */
+.page-loading-message,
+.page-error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-color-secondary);
+}
+.page-error-message {
+  color: var(--form-error-text-color);
+  background-color: rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.1);
+  border: 1px solid rgba(var(--form-error-text-color-rgb, 211, 47, 47), 0.3);
+  border-radius: var(--border-radius-md);
+  margin: 1rem auto;
+}
+
+@media (max-width: 768px) {
+  .manage-participants-page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  .participant-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .participant-item .actions {
+    width: 100%;
+    justify-content: flex-start; /* Or space-around */
+  }
+  .participant-item .action-button,
+  .participant-item .action-link {
+    flex-grow: 1; /* Make buttons take more space if needed */
+    text-align: center;
+  }
+}

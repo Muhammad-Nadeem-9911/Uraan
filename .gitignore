@@ -1,0 +1,24 @@
+# Dependencies
+/client/node_modules
+/server/node_modules
+/client/dist # Vite build output
+# /server/dist # If you had a build step for server
+
+# Environment variables
+.env
+/client/.env
+/client/.env.*
+/server/.env
+/server/.env.*
+!.env.example # It's good practice to commit example env files
+/client..env.development
+# IDE and OS files
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

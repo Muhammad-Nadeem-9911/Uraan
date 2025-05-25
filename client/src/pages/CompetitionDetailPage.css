@@ -1,0 +1,474 @@
+/* d:/Uraan/client/src/pages/CompetitionDetailPage.css */
+
+.competition-detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem; /* No top padding, handled by .main-content */
+}
+
+/* Loading and Error Messages (can be globalized) */
+.loading-message,
+.error-message,
+.info-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-color-secondary);
+  margin-top: 2rem;
+}
+
+.error-message {
+  color: #d32f2f; /* A standard error red */
+  background-color: #ffebee;
+  border: 1px solid #d32f2f;
+  border-radius: var(--border-radius-md);
+}
+
+/* 1. Page Title Section (New) */
+.page-title-container {
+  padding: 1.5rem 1rem; /* Padding for top/bottom and sides */
+  text-align: center; /* Or left, based on preference */
+  margin-top: 2rem; /* Space after the hero section */
+  margin-bottom: 1.5rem; /* Space before the stats block */
+}
+
+.page-title-container h1 {
+  font-family: var(--font-heading);
+  font-size: 2.8rem; /* Or your desired title size */
+  color: var(--text-color-primary); /* Or var(--primary-color) */
+  margin: 0; /* Remove default h1 margin */
+  line-height: 1.2; /* Adjust line height for better readability if text wraps */
+  word-wrap: break-word; /* Ensure long words without spaces can break */
+  overflow-wrap: break-word; /* Standard property for word wrapping */
+}
+
+/* 2. Hero/Header Section */
+.competition-header {
+  position: relative;
+  height: 50vh; /* Increased height */
+  min-height: 300px; /* Increased min-height */
+  max-height: 450px; /* Increased max-height */
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  margin-bottom: 2rem; /* Keep space before stats block */
+  box-shadow: var(--box-shadow-medium);
+}
+
+.header-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease-out;
+}
+
+.competition-header:hover .header-background-image {
+  transform: scale(1.05);
+}
+
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align content to the bottom */
+  padding: 1.5rem 2rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem; /* Row and column gap */
+  font-size: 1rem;
+  /* If you want meta to be more prominent now title is gone, adjust font-size or padding */
+}
+
+.header-meta span {
+  display: flex;
+  align-items: center;
+}
+
+.weather-info {
+  /* Style for weather icon and text */
+}
+
+/* 3. Competition Stats Block */
+.competition-stats-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--background-color-light-alt); /* Or use glassmorphism */
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+  margin-bottom: 2.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-medium);
+}
+
+
+.stat-icon {
+  font-size: 2.5rem; /* Adjust if using react-icons */
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Specific styling for the status text within the stats block if needed */
+.status-stat-item .stat-value.status-text-value {
+  font-size: 1.6rem; /* Slightly smaller than other stat values if it's text */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary-color); /* Or keep it var(--text-color-primary) */
+}
+
+
+/* 4. Leaderboard Section (Basic styles for now) */
+.leaderboard-section {
+  padding: 1.5rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+  margin-top: 2rem; /* Added margin for separation */
+}
+
+.leaderboard-section h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color-primary);
+}
+
+.leaderboard-table-container {
+  overflow-x: auto; /* For responsive tables */
+}
+
+.leaderboard-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.leaderboard-table-container th,
+.leaderboard-table-container td {
+  padding: 0.85rem 1rem; /* Slightly more padding */
+  text-align: center; /* Changed to center for horizontal alignment */
+  border-bottom: 1px solid var(--background-color-light-alt);
+  font-size: 0.95rem;
+  vertical-align: middle; /* Align content vertically in cells */
+  white-space: nowrap; /* Prevent text wrapping in cells where not desired */
+}
+
+.leaderboard-table-container th {
+  background-color: var(--background-color-light-alt);
+  color: var(--text-color-primary);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  /* z-index is set below for sticky headers */
+  white-space: nowrap;
+}
+
+/* Participant Avatar and Name */
+.participant-info-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center flex items horizontally if td is wider */
+}
+
+.participant-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--background-color-light-alt);
+}
+
+.participant-name-text {
+  font-weight: 500;
+  color: var(--text-color-primary);
+  /* text-align: left; */ /* If you want the name itself to be left-aligned within its centered container */
+}
+
+/* Rank Badge Styling */
+.rank-cell {
+  /* text-align: center !important; */ /* Already centered by the general td rule */
+  width: 80px; /* Fixed width for rank column */
+}
+
+.rank-badge {
+  display: inline-block;
+  padding: 0.3em 0.6em;
+  font-size: 0.9em;
+  font-weight: 700;
+  border-radius: var(--border-radius-sm);
+  color: white;
+  min-width: 2em; /* Ensure badge has some width even for single digit */
+  text-align: center;
+  background-color: var(--text-color-secondary); /* Default rank badge color */
+}
+
+/* Top 3 Rank Badge Colors & Row Highlighting */
+.top-rank-row.rank-row-1 .rank-badge {
+  background-color: var(--accent-color); /* Gold */
+  color: var(--text-color-primary); /* Dark text on gold */
+}
+.top-rank-row.rank-row-2 .rank-badge {
+  background-color: #c0c0c0; /* Silver */
+  color: var(--text-color-primary);
+}
+.top-rank-row.rank-row-3 .rank-badge {
+  background-color: #cd7f32; /* Bronze */
+}
+.top-rank-row.rank-row-1 td.sticky-col,
+.top-rank-row.rank-row-2 td.sticky-col,
+.top-rank-row.rank-row-3 td.sticky-col {
+  /* background-color: #f0f8ff; */ /* Removed to allow default row/sticky backgrounds */
+}
+.top-rank-row {
+  font-weight: 500;
+}
+.top-rank-row td {
+  /* border-top: 1px solid var(--primary-color); */ /* Removed to avoid conflict with sticky bg */
+  /* border-bottom: 1px solid var(--primary-color); */ /* Removed to avoid conflict with sticky bg */
+}
+
+.leaderboard-table-container tbody tr:nth-child(even) {
+  background-color: #fdfdfd; /* Slightly different for alternate rows */
+}
+
+.leaderboard-table-container tbody tr:hover {
+  background-color: #eef6ff; /* Light blue hover, adjust color as needed */
+}
+
+/* Sticky Column Styling - Apply only on screens wider than a mobile breakpoint (e.g., 768px) */
+@media (min-width: 768px) { /* Adjust breakpoint as needed */
+  .sticky-col {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    background-color: var(--background-color-light); /* Default background for sticky cells */
+  }
+
+  .leaderboard-table-container th.sticky-col {
+    background-color: var(--background-color-light-alt); /* Match header background */
+    z-index: 3; /* Above data cells and other sticky data cells */
+  }
+
+  .leaderboard-table-container td.sticky-col {
+    z-index: 1; /* Above non-sticky scrolling content */
+  }
+
+  /* Define widths for sticky columns for accurate positioning */
+  .sticky-col-rank {
+    width: 80px; /* Matches .rank-cell width */
+    min-width: 80px;
+    left: 0;
+  }
+
+  .sticky-col-participant {
+    width: 220px; /* Adjust as needed for avatar + name */
+    min-width: 220px;
+    left: 80px; /* Width of rank column */
+  }
+  .leaderboard-table-container th.sticky-col-pigeons-returned {
+    width: 150px; 
+    min-width: 150px;
+    left: 300px; /* 80px (rank) + 220px (participant) */
+    /* It will inherit background-color from th.sticky-col */
+  }
+  .sticky-col-pigeons-returned { /* For the TD element */
+    width: 150px; 
+    min-width: 150px;
+    left: 300px; /* 80px (rank) + 220px (participant) */
+    /* Ensure this TD also gets a background if it's sticky */
+    background-color: var(--background-color-light); 
+  }
+
+  .sticky-col-total-time {
+    width: 130px; /* Adjust as needed */
+    min-width: 130px;
+    right: 0;
+    /* text-align: right !important; */ /* Will be centered by default, adjust if right-align is specifically needed for this sticky col */
+  }
+}
+
+/* Total Time Cell Styling */
+.total-time-cell {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1.05rem; /* Slightly larger */
+}
+
+/* Pigeon Arrival Time Chips */
+.pigeon-arrival-time-cell {
+  /* The cell itself is already centered by the general td rule */
+}
+
+.time-chip { /* Style the span inside the cell as a chip */
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  background-color: var(--background-color-light-alt);
+  border: 1px solid #ddd; /* Softer border for chips */
+  border-radius: var(--border-radius-md);
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+  font-weight: 500;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { /* Start and end in normal state for smoother looping */
+    background-color: var(--background-color-light-alt);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% { /* Highlighted state */
+    background-color: var(--accent-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(var(--accent-color), 0.7);
+  }
+}
+.time-chip.animate-highlight {
+  animation: highlightPulse 1s ease-in-out infinite; /* Pulse every 1 second, repeats indefinitely until class is removed */
+  /* Ensure it stands out if sticky columns overlap */
+  position: relative; 
+  z-index: 2; 
+}
+
+/* Styles for the "Top Finishers by Longest Flight Time" section */
+.top-by-time-section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background-color: var(--background-color-light); /* Match leaderboard section bg */
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+}
+
+.top-by-time-section h3 {
+  text-align: center;
+  font-family: var(--font-heading);
+  color: var(--text-color-primary);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.top-finishers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.top-finisher-card {
+  background-color: var(--background-color-light-alt);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--box-shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 5px solid transparent; /* For place-specific color accent */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.top-finisher-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.finisher-rank-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.finisher-rank-text {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-color-primary);
+}
+
+.finisher-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color-primary);
+  margin-top: 0.5rem;
+}
+
+.finisher-time {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.finisher-official-rank {
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Specific styling for places */
+.top-finisher-card.first-place {
+  border-left-color: var(--accent-color); /* Golden Yellow */
+}
+.top-finisher-card.first-place .finisher-rank-icon {
+  color: var(--accent-color); /* Golden Yellow */
+}
+
+.top-finisher-card.second-place {
+  border-left-color: #c0c0c0; /* Silver */
+}
+.top-finisher-card.second-place .finisher-rank-icon {
+  color: #a0a0a0; /* Darker Silver/Grey */
+}
+
+.top-finisher-card.third-place {
+  border-left-color: #cd7f32; /* Bronze */
+}
+.top-finisher-card.third-place .finisher-rank-icon {
+  color: #b0712d; /* Darker Bronze */
+}

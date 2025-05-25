@@ -1,0 +1,164 @@
+/* d:\Uraan\client\src\pages\EditCompetitionPage.css */
+
+.edit-competition-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--background-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.edit-competition-page h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-family: var(--font-heading);
+}
+
+.edit-competition-form .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-competition-form .form-group {
+  flex: 1 1 calc(50% - 0.75rem); /* Two columns by default, accounting for gap */
+  display: flex;
+  flex-direction: column;
+  min-width: 250px; /* Minimum width for smaller viewports before stacking */
+}
+
+.edit-competition-form .form-group.full-width {
+  flex-basis: 100%;
+}
+
+.edit-competition-form .form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--text-color-secondary);
+  font-family: var(--font-body);
+}
+
+.edit-competition-form .form-group input,
+.edit-competition-form .form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  color: var(--text-color-primary);
+  background-color: var(--background-color-light-alt);
+  border: 1px solid var(--form-input-border-color, #ccc);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.edit-competition-form .form-group input:focus,
+.edit-competition-form .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+}
+
+.edit-competition-form .form-error-message {
+  color: var(--form-error-text-color, #d32f2f);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: left;
+  width: 100%; /* Ensure it takes full width if placed in a form-row */
+  padding: 0.5rem;
+  background-color: rgba(var(--form-error-text-color, #d32f2f), 0.1);
+  border: 1px solid rgba(var(--form-error-text-color, #d32f2f), 0.3);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1rem;
+}
+
+.edit-competition-form .form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-start;
+}
+
+.edit-competition-form .form-button,
+.edit-competition-form .submit-button,
+.edit-competition-form .cancel-button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.edit-competition-form .submit-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+.edit-competition-form .submit-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+}
+.edit-competition-form .submit-button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.edit-competition-form .cancel-button {
+  background-color: var(--background-color-light-alt);
+  color: var(--text-color-secondary);
+  border: 1px solid var(--form-input-border-color);
+}
+.edit-competition-form .cancel-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+  border-color: #bbb;
+}
+.edit-competition-form .cancel-button:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+  border-color: #ced4da;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .edit-competition-form .form-row {
+    flex-direction: column;
+    gap: 0; /* Remove gap as form-groups will have margin-bottom */
+  }
+  .edit-competition-form .form-group {
+    flex-basis: 100%;
+    margin-bottom: 1rem; /* Add space between stacked groups */
+  }
+  .edit-competition-page {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  .edit-competition-form .form-actions {
+    flex-direction: column;
+  }
+  .edit-competition-form .form-actions .form-button,
+  .edit-competition-form .form-actions .submit-button,
+  .edit-competition-form .form-actions .cancel-button {
+    width: 100%;
+  }
+}
+
+/* General page loading/error messages (can be in a global component CSS too) */
+.page-loading-message,
+.page-error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-color-secondary);
+}
+.page-error-message {
+  color: var(--form-error-text-color);
+  background-color: rgba(var(--form-error-text-color, #d32f2f), 0.1);
+  border: 1px solid rgba(var(--form-error-text-color, #d32f2f), 0.3);
+  border-radius: var(--border-radius-md);
+  margin: 1rem auto;
+  max-width: 800px;
+}
