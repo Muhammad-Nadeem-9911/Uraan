@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom'; // Link is not used directly in this file anymore
 import io from 'socket.io-client'; // Import socket.io-client
 import HeroSection from '../components/home/HeroSection'; // Import the HeroSection
 import CompetitionCard from '../components/competitions/CompetitionCard'; // Import CompetitionCard
@@ -16,6 +16,14 @@ const HomePage = () => {
   const [heroSlides, setHeroSlides] = useState([]);
   const [heroLoading, setHeroLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // State for filters
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterLocation, setFilterLocation] = useState('');
+  const [filterStatus, setFilterStatus] = useState(''); // e.g., 'UPCOMING', 'ONGOING'
+  const [filterStartDate, setFilterStartDate] = useState('');
+  const [filterEndDate, setFilterEndDate] = useState('');
+  // const [filteredCompetitions, setFilteredCompetitions] = useState([]); // Replaced by useMemo
 
   useEffect(() => {
     const fetchHeroSlides = async () => {
@@ -82,6 +90,58 @@ const HomePage = () => {
     };
   }, []); // Empty dependency array: runs once on mount for initial fetch and socket setup
 
+  // Memoized filtering logic
+  const filteredCompetitions = useMemo(() => {
+    let tempFiltered = competitions;
+
+    if (searchTerm) {
+      tempFiltered = tempFiltered.filter(comp =>
+        comp.competitionName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (comp.description && comp.description.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    if (filterLocation) {
+      tempFiltered = tempFiltered.filter(comp =>
+        comp.location && comp.location.toLowerCase().includes(filterLocation.toLowerCase())
+      );
+    }
+
+    if (filterStatus) {
+      // Assuming competition.status is 'UPCOMING', 'ONGOING', 'COMPLETED' etc.
+      tempFiltered = tempFiltered.filter(comp => comp.status && comp.status.toUpperCase() === filterStatus.toUpperCase());
+    }
+
+    if (filterStartDate) {
+      const startDate = new Date(filterStartDate);
+      startDate.setHours(0, 0, 0, 0); // Compare from the start of the day
+      tempFiltered = tempFiltered.filter(comp => {
+        const compDate = new Date(comp.competitionDate);
+        return compDate >= startDate;
+      });
+    }
+
+    if (filterEndDate) {
+      const endDate = new Date(filterEndDate);
+      endDate.setHours(23, 59, 59, 999); // Compare until the end of the day
+      tempFiltered = tempFiltered.filter(comp => {
+        const compDate = new Date(comp.competitionDate);
+        return compDate <= endDate;
+      });
+    }
+
+    return tempFiltered;
+  }, [competitions, searchTerm, filterLocation, filterStatus, filterStartDate, filterEndDate]);
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setFilterLocation('');
+    setFilterStatus('');
+    setFilterStartDate('');
+    setFilterEndDate('');
+  };
+
+
   if (loading || heroLoading) { // Check both loading states
     return (
       <div className="home-page-container">
@@ -103,13 +163,61 @@ const HomePage = () => {
   return (
     <div className="home-page-container">
       <HeroSection slides={heroSlides} isLoading={heroLoading} /> {/* Pass slides and loading state */}
+
+      {/* Filters Section */}
+      <section className="filters-section">
+        <h3 className="filters-title">Filter Competitions</h3>
+        <div className="filter-controls">
+          <input
+            type="text"
+            placeholder="Search by keyword..."
+            className="filter-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Location..."
+            className="filter-input"
+            value={filterLocation}
+            onChange={(e) => setFilterLocation(e.target.value)}
+          />
+          <select
+            className="filter-select"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="">Status</option> {/* Changed default text, good */}
+            <option value="UPCOMING">Upcoming</option>
+            <option value="ONGOING">Ongoing</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+          {/* Separated Date Inputs */}
+          <div className="filter-date-group"> {/* Use a class for styling */}
+            {/* Label is inside the group */}
+            <label htmlFor="startDate">From:</label>
+            <input type="date" id="startDate" className="filter-date" value={filterStartDate} onChange={(e) => setFilterStartDate(e.target.value)} />
+          </div>
+          <div className="filter-date-group"> {/* Use a class for styling */}
+            {/* Label is inside the group */}
+            <label htmlFor="endDate">To:</label>
+            <input type="date" id="endDate" className="filter-date" value={filterEndDate} onChange={(e) => setFilterEndDate(e.target.value)} />
+          </div>
+          <div className="filter-button-wrapper"> {/* Wrapper for the button */}
+            <button onClick={handleClearFilters} className="filter-button clear-filters-button">
+              Clear Filters
+            </button>
+          </div>
+        </div>
+      </section>
+
       <section className="competitions-section" id="competitions-grid"> {/* id for hero CTA scroll target */}
         <h2 className="section-title">Upcoming & Ongoing Competitions</h2>
-        {competitions.length === 0 ? (
+        {filteredCompetitions.length === 0 ? (
           <p className="no-competitions-message">No competitions found at the moment. Check back soon!</p>
         ) : (
           <div className="competitions-grid-layout">
-            {competitions.map((competition) => (
+            {filteredCompetitions.map((competition) => (
               <CompetitionCard key={competition._id} competition={competition} />
             ))}
           </div>

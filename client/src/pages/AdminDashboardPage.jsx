@@ -108,10 +108,6 @@ const AdminDashboardPage = () => {
           <p className="summary-card-value">{competitions.filter(c => c.status === 'UPCOMING').length}</p>
           {/* <Link to="/admin/reports" className="summary-card-link">View Report</Link> */}
         </div>
-        <div className="summary-card">
-          <h3 className="summary-card-title">Quick Actions</h3>
-          <button onClick={handleCreateCompetitionClick} className="button primary-button small-button">New Competition</button>
-        </div>
       </section>
 
       <section className="admin-section competitions-management">

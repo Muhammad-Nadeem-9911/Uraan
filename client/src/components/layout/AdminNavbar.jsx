@@ -17,11 +17,11 @@ const AdminNavbar = () => {
 
   return (
     <nav className="admin-navbar">
-      <Link to="/admin/dashboard" className="admin-navbar-brand">Admin Panel</Link>
+      {/* Make the brand text itself the link to the dashboard */}
+      <Link to="/admin/dashboard" className="admin-navbar-brand">Admin Panel</Link> 
       <div className="admin-navbar-menu">
-        <Link to="/admin/dashboard" className="admin-navbar-link">Dashboard</Link>
-        <Link to="/admin/hero-carousel" className="admin-navbar-link">Manage Hero Carousel</Link>
-
+        {/* Removed the separate Dashboard link */}
+        <Link to="/admin/hero-carousel" className="admin-navbar-link">Hero Settings</Link>
         {/* Add more admin links as needed */}
         <button onClick={handleLogout} className="admin-navbar-button">Logout</button>
       </div>

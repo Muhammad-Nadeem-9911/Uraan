@@ -16,31 +16,41 @@
   text-decoration: none;
   color: var(--primary-color, #00aaff);
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.4rem; /* Slightly larger brand */
+  transition: color var(--transition-fast);
+}
+.admin-navbar-brand:hover {
+  color: var(--primary-color-light, #66ccff);
 }
 
 .admin-navbar-menu {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem; /* Slightly reduced gap for a tighter look */
   align-items: center;
 }
 
 .admin-navbar-link {
   text-decoration: none;
   color: var(--dark-mode-text, #e6f1ff);
+  padding: 0.5rem 0.75rem; /* Added padding for a larger clickable area */
+  border-radius: var(--border-radius-sm, 4px); /* Subtle rounding on hover */
   transition: color var(--transition-fast);
+  font-size: 0.9rem; /* Consistent font size for menu items */
 }
 .admin-navbar-link:hover {
-  color: var(--primary-color-light, #66ccff); /* Example hover color */
+  color: var(--primary-color, #00aaff);
+  background-color: rgba(var(--primary-color-rgb), 0.1); /* Subtle background on hover */
 }
 
 .admin-navbar-button {
-  padding: 0.4rem 0.8rem;
+  padding: 0.5rem 1rem; /* Adjusted padding for better balance with links */
   border: 1px solid var(--primary-color, #00aaff);
   border-radius: var(--border-radius-sm, 4px);
   background-color: transparent;
   color: var(--primary-color, #00aaff);
   cursor: pointer;
+  font-size: 0.9rem; /* Consistent font size */
+  font-weight: 600; /* Slightly bolder for an action button */
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 .admin-navbar-button:hover {

@@ -108,3 +108,51 @@
   display: block; /* Or inline-block, depending on context */
   max-width: 100%; /* Ensure it doesn't overflow its container */
 }
+
+/* === Mobile Responsiveness for CompetitionCard === */
+
+@media (max-width: 768px) { /* Tablet and larger mobile */
+  .card-image-container {
+    height: 150px; /* Reduce image container height */
+  }
+  .card-content {
+    padding: 0.75rem 1rem; /* Reduce padding inside the card content */
+  }
+  .card-title {
+    font-size: 1.1rem; /* Reduce title font size */
+    margin-bottom: 0.4rem;
+  }
+  .card-info {
+    font-size: 0.85rem; /* Reduce detail text font size */
+    margin-bottom: 0.25rem;
+    line-height: 1.3; /* Adjust line height for smaller text */
+  }
+  .card-status-tag {
+    font-size: 0.75em; /* Make status tag smaller */
+    /* If status tag has padding, adjust it here too, e.g., padding: 0.2em 0.5em; */
+  }
+  /* If you have action buttons/links directly in the card, style them here */
+  /* .competition-card-actions a { font-size: 0.9rem; padding: 0.4rem 0.8rem; } */
+}
+
+@media (max-width: 480px) { /* Smaller mobile phones */
+  .card-image-container {
+    height: 120px; /* Further reduce image container height */
+  }
+  .card-content {
+    padding: 0.6rem 0.8rem; /* Further reduce padding */
+  }
+  .card-title {
+    font-size: 1rem; /* Further reduce title font size */
+    margin-bottom: 0.3rem;
+  }
+  .card-info {
+    font-size: 0.75rem; /* Further reduce detail text font size */
+    line-height: 1.25;
+  }
+  .card-status-tag {
+    font-size: 0.7em;
+    /* e.g., padding: 0.15em 0.4em; */
+  }
+  /* .competition-card-actions a { font-size: 0.8rem; padding: 0.3rem 0.6rem; } */
+}

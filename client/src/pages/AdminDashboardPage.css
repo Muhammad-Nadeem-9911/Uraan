@@ -2,7 +2,7 @@
 
 .admin-dashboard-page {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto; /* Center the page content */
   padding: 2rem 1.5rem;
   /* background-color: var(--background-color-light-alt); */ /* Optional: slightly different bg for admin area */
 }
@@ -53,7 +53,8 @@
 /* Summary Cards Section */
 .admin-summary-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive cards */
+  /* Explicitly set 2 columns for the remaining cards */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
@@ -225,4 +226,20 @@
     justify-content: flex-end; /* Align actions to the right in stacked view */
     padding-top: 0.5rem;
   }
+}
+
+/* --- Mobile Responsiveness for Admin Dashboard Page Padding --- */
+@media (max-width: 768px) {
+  .admin-dashboard-page {
+    padding: 1.5rem 0.2rem; /* Significantly reduced left/right padding */
+  }
+  /* You might also want to adjust padding on individual sections if they have their own, e.g.: */
+  /* .admin-summary-cards, .admin-section { padding-left: 0.5rem; padding-right: 0.5rem; } */
+}
+
+@media (max-width: 480px) {
+  .admin-dashboard-page {
+    padding: 1rem 0.1rem; /* Minimal left/right padding */
+  }
+  /* .admin-summary-cards, .admin-section { padding-left: 0.25rem; padding-right: 0.25rem; } */
 }
