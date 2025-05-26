@@ -173,11 +173,11 @@ const HomePage = () => {
       {/* Filters Section */}
       <section className="filters-section">
         <div className="filters-header">
-          <h3 className="filters-title">Filter Competitions</h3>
+          <h3 className="filters-title">Filters</h3>
           <button onClick={toggleFilters} className="filter-toggle-button">
             {/* Using icons for mobile friendliness, text for clarity */}
             <span className="filter-toggle-icon">{isFiltersOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
-            <span className="filter-toggle-text">{isFiltersOpen ? 'Hide' : 'Show'} Filters</span>
+            <span className="filter-toggle-text">{isFiltersOpen ? 'Hide' : 'Show'}</span>
           </button>
         </div>
         <div className={`filter-controls-wrapper ${isFiltersOpen ? 'open' : ''}`}>

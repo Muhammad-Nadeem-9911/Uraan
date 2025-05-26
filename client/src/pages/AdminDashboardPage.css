@@ -228,6 +228,157 @@
   }
 }
 
+/* Filters Section - Copied from HomePage.css and adapted */
+.filters-section { /* General filter section styling */
+  padding: 1.5rem 1rem; /* Default padding */
+  margin-bottom: 2rem;
+  background-color: var(--background-color-light-alt);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+  /* max-width: 1200px; /* This is handled by .admin-dashboard-page */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+}
+
+.admin-filters-section { /* Specific class for admin page filters if needed */
+  margin-top: 1.5rem; /* Add some space above admin filters */
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.filters-title {
+  text-align: left;
+  font-size: 1.6rem; /* Slightly smaller for admin context */
+  color: var(--text-color-secondary);
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.filter-toggle-button {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color-light, #66ccff);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-toggle-button:hover {
+  background-color: var(--primary-color-dark);
+  color: white;
+  border-color: var(--primary-color-dark);
+  box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.filter-controls-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding-top 0.5s ease-in-out, padding-bottom 0.5s ease-in-out;
+}
+
+.filter-controls-wrapper.open {
+  max-height: 1000px;
+  opacity: 1;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.filter-controls {
+  display: grid;
+  /* Laptop view: Match HomePage's filter layout for consistency.
+     Reduced minmax for better fitting. */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Reduced min from 160px */
+  gap: 1rem;
+  align-items: end;
+  /* justify-content: center; */ /* Changed from center to default (start/normal) */
+}
+
+.filter-input,
+.filter-select,
+.filter-date {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--neutral-color-light, #e0e0e0);
+  border-radius: var(--border-radius-md);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  background-color: var(--background-color-light);
+  color: var(--text-color-primary);
+  box-sizing: border-box;
+}
+
+.filter-input:focus,
+.filter-select:focus,
+.filter-date:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.filter-date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-date-group label {
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-color-secondary);
+  text-align: left;
+}
+
+.filter-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-button-wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.clear-filters-button {
+  background-color: var(--neutral-color-light, #e0e0e0);
+  color: var(--text-color-secondary);
+  width: 100%;
+}
+
+.clear-filters-button:hover { background-color: #d5d5d5; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+.link-button { /* Simple style for link-like buttons */
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit; /* Or set a specific size */
+}
+.link-button:hover {
+  color: var(--primary-color-dark);
+}
+
 /* --- Mobile Responsiveness for Admin Dashboard Page Padding --- */
 @media (max-width: 768px) {
   .admin-dashboard-page {
@@ -236,12 +387,88 @@
   /* You might also want to adjust padding on individual sections if they have their own, e.g.: */
   /* .admin-summary-cards, .admin-section { padding-left: 0.5rem; padding-right: 0.5rem; } */
 }
+/* Mobile responsiveness for filters in Admin Dashboard */
+@media (max-width: 768px) {
+  .admin-filters-section .filters-title { /* Target admin filter title specifically */
+    font-size: 1.3rem; /* Reduce title size */
+  }
+  .admin-filters-section .filter-toggle-button {
+    font-size: 0.8rem; /* Smaller button text */
+    padding: 0.4rem 0.8rem; /* More compact padding */
+  }
+  .admin-filters-section .filter-controls { /* Tablet/Larger Mobile: General 2 columns */
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: stretch;
+    gap: 0.75rem; /* Match HomePage */
+  }
+  .admin-filters-section .filter-input,
+  .admin-filters-section .filter-select,
+  .admin-filters-section .filter-date {
+    font-size: 0.9rem; /* Match HomePage */
+    /* Padding will inherit from the base .filter-input style (0.75rem) or be slightly less if needed */
+    /* If HomePage explicitly sets padding here, match it. HomePage has padding: 0.75rem by default for these */
+  }
+  .admin-filters-section .filter-button { /* Clear Filters button */
+    font-size: 0.9rem; /* Match HomePage */
+    padding: 0.7rem 1.25rem; /* Match HomePage */
+  }
+}
 
 @media (max-width: 480px) {
   .admin-dashboard-page {
     padding: 1rem 0.1rem; /* Minimal left/right padding */
   }
   /* .admin-summary-cards, .admin-section { padding-left: 0.25rem; padding-right: 0.25rem; } */
+}
+@media (max-width: 480px) {
+  .admin-filters-section .filters-header {
+    /* Keep on one line */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem; /* Add a small gap */
+    min-height: 38px; /* Ensure header has a consistent minimum height */
+  }
+  .admin-filters-section .filters-title {
+    font-size: 1.2rem; /* Further reduce title size */
+  }
+  .admin-filters-section .filter-controls {
+    /* Small Mobile: Specific layout using grid-template-areas, matching HomePage */
+    grid-template-columns: 1fr 1fr; 
+    gap: 0.75rem;
+    grid-template-areas:
+      "search   location"
+      "startDate endDate"
+      "status   status"
+      "clear    clear";
+  }
+  /* Assign grid areas to the direct children of .filter-controls */
+  .admin-filters-section .filter-controls > input[type="text"]:first-of-type { grid-area: search; }
+  .admin-filters-section .filter-controls > input[type="text"]:nth-of-type(2) { grid-area: location; }
+  .admin-filters-section .filter-controls > .filter-date-group:first-of-type { grid-area: startDate; }
+  .admin-filters-section .filter-controls > .filter-date-group:nth-of-type(2) { grid-area: endDate; }
+  .admin-filters-section .filter-controls > .filter-select { grid-area: status; }
+  .admin-filters-section .filter-controls > .filter-button-wrapper { grid-area: clear; }
+
+  .admin-filters-section .filter-toggle-button {
+    font-size: 0.7rem; /* Even smaller for very compact screens */
+    padding: 0.35rem 0.5rem; /* Very compact padding */
+    min-width: auto; /* Allow it to shrink with text/icon */
+    gap: 0.25rem; /* Reduce gap between icon and text */
+    }
+  .admin-filters-section .filter-input,
+  .admin-filters-section .filter-select,
+  .admin-filters-section .filter-date {
+    font-size: 0.85rem; /* Match HomePage */
+    padding: 0.6rem;    /* Match HomePage */
+  }
+  .admin-filters-section .filter-date-group label {
+    font-size: 0.75rem; /* Match HomePage */
+  }
+  .admin-filters-section .filter-button { /* Clear Filters button */
+    font-size: 0.85rem; /* Match HomePage */
+    padding: 0.6rem 1rem;  /* Match HomePage */
+  }
 }
 
 @media (max-width: 420px) { /* Targeting very narrow screens like Galaxy S8+ */

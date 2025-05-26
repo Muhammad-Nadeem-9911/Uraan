@@ -223,14 +223,15 @@
   }
 
   .filters-title {
-    font-size: 1.5rem; /* Slightly smaller title on mobile */
+    font-size: 1.4rem; /* Further reduce title size */
   }
   .filter-controls-wrapper.open {
     padding-top: 1.25rem; 
     padding-bottom: 0.75rem; /* Added some bottom padding for consistency */
   }
   .filter-toggle-button {
-    font-size: 0.85rem; /* Slightly smaller button text on mobile */
+    font-size: 0.8rem; /* Smaller button text */
+    padding: 0.4rem 0.8rem; /* More compact padding */
   }
   .filter-controls { /* Tablet/Larger Mobile: General 2 columns */
     grid-template-columns: repeat(2, 1fr); /* Two fields per row */
@@ -263,12 +264,15 @@
     align-items: center;
     margin-bottom: 1.25rem; /* Adjust margin */
     gap: 0.5rem; /* Add a small gap if they get too close */
+    min-height: 38px; /* Ensure header has a consistent minimum height to prevent jumpiness */
   }
   .filter-controls-wrapper.open {
     padding-top: 1rem; 
     padding-bottom: 0.5rem;
   }
-  .filters-title { font-size: 1.3rem; }
+  .filters-title {
+    font-size: 1.2rem; /* Further reduce title size */
+  }
   .filter-controls {
     /* Small Mobile: Specific layout using grid-template-areas */
     grid-template-columns: 1fr 1fr; /* Define 2 equal columns */
@@ -301,9 +305,10 @@
     padding: 0.6rem 1rem;  /* Adjust padding */
   }
   .filter-toggle-button {
-    font-size: 0.75rem; /* Smaller toggle button text for very small screens */
-    padding: 0.4rem 0.6rem; /* More compact padding */
-    min-width: 80px; /* Ensure it has some minimum width if text is short or icon is used */
+    font-size: 0.7rem; /* Even smaller for very compact screens */
+    padding: 0.35rem 0.5rem; /* Very compact padding */
+    min-width: auto; /* Allow it to shrink with text/icon */
+    gap: 0.25rem; /* Reduce gap between icon and text */
   }
   .loading-message,
   .error-message,
