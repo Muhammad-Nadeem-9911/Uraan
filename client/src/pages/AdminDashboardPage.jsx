@@ -102,14 +102,17 @@ const AdminDashboardPage = () => {
 
     if (searchTerm) {
       tempFiltered = tempFiltered.filter(comp =>
-        comp.name.toLowerCase().includes(searchTerm.toLowerCase()) || // Admin dashboard uses comp.name
-        (comp.description && comp.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        (comp.name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (comp.description?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (comp.location?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (comp.status?.toLowerCase().includes(searchTerm.toLowerCase()))
+        // Add any other fields from the admin competition object you want to search
       );
     }
 
     if (filterLocation) {
       tempFiltered = tempFiltered.filter(comp =>
-        comp.location && comp.location.toLowerCase().includes(filterLocation.toLowerCase())
+        comp.location?.toLowerCase().includes(filterLocation.toLowerCase())
       );
     }
 
@@ -121,8 +124,8 @@ const AdminDashboardPage = () => {
       const startDate = new Date(filterStartDate);
       startDate.setHours(0, 0, 0, 0);
       tempFiltered = tempFiltered.filter(comp => {
-        const compDate = new Date(comp.date); // Admin dashboard uses comp.date
-        return compDate >= startDate;
+        // Ensure comp.date exists before creating a Date object
+        return comp.date && new Date(comp.date) >= startDate;
       });
     }
 
@@ -130,8 +133,8 @@ const AdminDashboardPage = () => {
       const endDate = new Date(filterEndDate);
       endDate.setHours(23, 59, 59, 999);
       tempFiltered = tempFiltered.filter(comp => {
-        const compDate = new Date(comp.date); // Admin dashboard uses comp.date
-        return compDate <= endDate;
+        // Ensure comp.date exists before creating a Date object
+        return comp.date && new Date(comp.date) <= endDate;
       });
     }
     return tempFiltered;

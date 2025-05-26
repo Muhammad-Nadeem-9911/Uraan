@@ -98,37 +98,39 @@ const HomePage = () => {
 
     if (searchTerm) {
       tempFiltered = tempFiltered.filter(comp =>
-        comp.competitionName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (comp.description && comp.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        (comp.name?.toLowerCase().includes(searchTerm.toLowerCase())) || // Changed to comp.name
+        (comp.description?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (comp.location?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (comp.status?.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
     if (filterLocation) {
       tempFiltered = tempFiltered.filter(comp =>
-        comp.location && comp.location.toLowerCase().includes(filterLocation.toLowerCase())
+        comp.location?.toLowerCase().includes(filterLocation.toLowerCase())
       );
     }
 
     if (filterStatus) {
       // Assuming competition.status is 'UPCOMING', 'ONGOING', 'COMPLETED' etc.
-      tempFiltered = tempFiltered.filter(comp => comp.status && comp.status.toUpperCase() === filterStatus.toUpperCase());
+      tempFiltered = tempFiltered.filter(comp => comp.status?.toUpperCase() === filterStatus.toUpperCase());
     }
 
     if (filterStartDate) {
       const startDate = new Date(filterStartDate);
-      startDate.setHours(0, 0, 0, 0); // Compare from the start of the day
+      startDate.setHours(0, 0, 0, 0); // Set to start of the selected day in local time
       tempFiltered = tempFiltered.filter(comp => {
-        const compDate = new Date(comp.competitionDate);
-        return compDate >= startDate;
+        // Ensure comp.date exists and is valid before creating a Date object
+        return comp.date && !isNaN(new Date(comp.date).getTime()) && new Date(comp.date) >= startDate;
       });
     }
 
     if (filterEndDate) {
       const endDate = new Date(filterEndDate);
-      endDate.setHours(23, 59, 59, 999); // Compare until the end of the day
+      endDate.setHours(23, 59, 59, 999); // Set to end of the selected day in local time
       tempFiltered = tempFiltered.filter(comp => {
-        const compDate = new Date(comp.competitionDate);
-        return compDate <= endDate;
+        // Ensure comp.date exists and is valid before creating a Date object
+        return comp.date && !isNaN(new Date(comp.date).getTime()) && new Date(comp.date) <= endDate;
       });
     }
 
