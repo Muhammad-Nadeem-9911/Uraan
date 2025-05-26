@@ -73,13 +73,58 @@
   margin-right: auto;
 }
 
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically align title and button */
+  margin-bottom: 1.5rem;
+}
+
 .filters-title {
-  text-align: center;
+  text-align: left; /* Align title to the left */
   font-size: 1.8rem;
   color: var(--text-color-secondary); /* Softer color for the title */
-  margin-bottom: 1.5rem;
+  margin: 0; /* Remove default margins */
   font-family: var(--font-heading);
   font-weight: 600; /* Slightly less bold */
+}
+
+.filter-toggle-button {
+  background-color: transparent; /* Make it less prominent initially */
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color-light, #66ccff); /* Softer border */
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  font-size: 0.9rem; /* Align with other button/link sizes */
+  display: inline-flex; /* For icon alignment if added */
+  align-items: center;
+  gap: 0.5rem; /* Space for icon if added */
+}
+
+.filter-toggle-button:hover {
+  background-color: var(--primary-color-dark);
+  color: white;
+  border-color: var(--primary-color-dark);
+  box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
+}
+
+
+.filter-controls-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding-top 0.5s ease-in-out, padding-bottom 0.5s ease-in-out;
+  /* Add padding transition for smoother appearance/disappearance of content */
+}
+
+.filter-controls-wrapper.open {
+  max-height: 1000px; /* Adjust to a value larger than the content's max height */
+  opacity: 1;
+  padding-top: 1.5rem; /* Default padding when open for larger screens */
+  padding-bottom: 0.5rem; /* Default padding at the bottom */
 }
 
 .filter-controls {
@@ -178,12 +223,28 @@
   }
 
   .filters-title {
-    font-size: 1.6rem;
+    font-size: 1.5rem; /* Slightly smaller title on mobile */
+  }
+  .filter-controls-wrapper.open {
+    padding-top: 1.25rem; 
+    padding-bottom: 0.75rem; /* Added some bottom padding for consistency */
+  }
+  .filter-toggle-button {
+    font-size: 0.85rem; /* Slightly smaller button text on mobile */
   }
   .filter-controls { /* Tablet/Larger Mobile: General 2 columns */
     grid-template-columns: repeat(2, 1fr); /* Two fields per row */
     justify-content: stretch; /* Allow items to stretch to fill columns */
     gap: 0.75rem;
+  }
+  .filter-input,
+  .filter-select,
+  .filter-date {
+    font-size: 0.9rem; /* Slightly smaller font for inputs */
+  }
+  .filter-button { /* Clear Filters button */
+    font-size: 0.9rem; /* Slightly smaller font */
+    padding: 0.7rem 1.25rem; /* Adjust padding */
   }
 }
 
@@ -196,7 +257,18 @@
     gap: 0.75rem; /* Further reduced gap */
   }
   .filters-section { padding: 1rem 0.5rem; }
-  .filters-title { font-size: 1.4rem; }
+  .filters-header { /* Keep as row, adjust items */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem; /* Adjust margin */
+    gap: 0.5rem; /* Add a small gap if they get too close */
+  }
+  .filter-controls-wrapper.open {
+    padding-top: 1rem; 
+    padding-bottom: 0.5rem;
+  }
+  .filters-title { font-size: 1.3rem; }
   .filter-controls {
     /* Small Mobile: Specific layout using grid-template-areas */
     grid-template-columns: 1fr 1fr; /* Define 2 equal columns */
@@ -214,6 +286,25 @@
   .filter-controls > .filter-date-group:nth-of-type(2) { grid-area: endDate; }
   .filter-controls > .filter-select { grid-area: status; }
   .filter-controls > .filter-button-wrapper { grid-area: clear; }
+
+  .filter-input,
+  .filter-select,
+  .filter-date {
+    font-size: 0.85rem; /* Smaller font for inputs on small mobile */
+    padding: 0.6rem;    /* Smaller padding for inputs */
+  }
+  .filter-date-group label {
+    font-size: 0.75rem; /* Smaller date labels */
+  }
+  .filter-button { /* Clear Filters button */
+    font-size: 0.85rem; /* Smaller font */
+    padding: 0.6rem 1rem;  /* Adjust padding */
+  }
+  .filter-toggle-button {
+    font-size: 0.75rem; /* Smaller toggle button text for very small screens */
+    padding: 0.4rem 0.6rem; /* More compact padding */
+    min-width: 80px; /* Ensure it has some minimum width if text is short or icon is used */
+  }
   .loading-message,
   .error-message,
   .no-competitions-message { font-size: 0.9rem; padding: 1rem; }

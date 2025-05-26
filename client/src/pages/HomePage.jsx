@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
+import { FaFilter, FaChevronDown, FaChevronUp } from 'react-icons/fa'; // Example icons
 // import { Link } from 'react-router-dom'; // Link is not used directly in this file anymore
 import io from 'socket.io-client'; // Import socket.io-client
 import HeroSection from '../components/home/HeroSection'; // Import the HeroSection
@@ -24,6 +25,7 @@ const HomePage = () => {
   const [filterStartDate, setFilterStartDate] = useState('');
   const [filterEndDate, setFilterEndDate] = useState('');
   // const [filteredCompetitions, setFilteredCompetitions] = useState([]); // Replaced by useMemo
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false); // State for filter visibility
 
   useEffect(() => {
     const fetchHeroSlides = async () => {
@@ -141,20 +143,25 @@ const HomePage = () => {
     setFilterEndDate('');
   };
 
+  const toggleFilters = () => {
+    setIsFiltersOpen(!isFiltersOpen);
+  };
+
 
   if (loading || heroLoading) { // Check both loading states
     return (
       <div className="home-page-container">
         <HeroSection slides={heroSlides} isLoading={heroLoading} /> {/* Pass slides and loading state */}
         <section className="competitions-section" id="competitions-grid">
-          <h2 className="section-title">Upcoming & Ongoing Competitions</h2>
+          <h2 className="section-title">Competitions</h2>
           <div className="competitions-grid-layout">
             {/* Display a few skeleton cards */}
             {[...Array(6)].map((_, index) => <CompetitionCardSkeleton key={index} />)}
           </div>
         </section>
       </div>
-    );  }
+    );
+  }
 
   if (error) {
     return <div className="error-message">Error: {error}</div>;
@@ -163,56 +170,61 @@ const HomePage = () => {
   return (
     <div className="home-page-container">
       <HeroSection slides={heroSlides} isLoading={heroLoading} /> {/* Pass slides and loading state */}
-
       {/* Filters Section */}
       <section className="filters-section">
-        <h3 className="filters-title">Filter Competitions</h3>
-        <div className="filter-controls">
-          <input
-            type="text"
-            placeholder="Search by keyword..."
-            className="filter-input"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Location..."
-            className="filter-input"
-            value={filterLocation}
-            onChange={(e) => setFilterLocation(e.target.value)}
-          />
-          <select
-            className="filter-select"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="">Status</option> {/* Changed default text, good */}
-            <option value="UPCOMING">Upcoming</option>
-            <option value="ONGOING">Ongoing</option>
-            <option value="COMPLETED">Completed</option>
-          </select>
-          {/* Separated Date Inputs */}
-          <div className="filter-date-group"> {/* Use a class for styling */}
-            {/* Label is inside the group */}
-            <label htmlFor="startDate">From:</label>
-            <input type="date" id="startDate" className="filter-date" value={filterStartDate} onChange={(e) => setFilterStartDate(e.target.value)} />
-          </div>
-          <div className="filter-date-group"> {/* Use a class for styling */}
-            {/* Label is inside the group */}
-            <label htmlFor="endDate">To:</label>
-            <input type="date" id="endDate" className="filter-date" value={filterEndDate} onChange={(e) => setFilterEndDate(e.target.value)} />
-          </div>
-          <div className="filter-button-wrapper"> {/* Wrapper for the button */}
-            <button onClick={handleClearFilters} className="filter-button clear-filters-button">
-              Clear Filters
-            </button>
+        <div className="filters-header">
+          <h3 className="filters-title">Filter Competitions</h3>
+          <button onClick={toggleFilters} className="filter-toggle-button">
+            {/* Using icons for mobile friendliness, text for clarity */}
+            <span className="filter-toggle-icon">{isFiltersOpen ? <FaChevronUp /> : <FaChevronDown />}</span>
+            <span className="filter-toggle-text">{isFiltersOpen ? 'Hide' : 'Show'} Filters</span>
+          </button>
+        </div>
+        <div className={`filter-controls-wrapper ${isFiltersOpen ? 'open' : ''}`}>
+          <div className="filter-controls">
+            <input
+              type="text"
+              placeholder="Search by keyword..."
+              className="filter-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Location..."
+              className="filter-input"
+              value={filterLocation}
+              onChange={(e) => setFilterLocation(e.target.value)}
+            />
+            <select
+              className="filter-select"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="">Status</option>
+              <option value="UPCOMING">Upcoming</option>
+              <option value="ONGOING">Ongoing</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+            <div className="filter-date-group">
+              <label htmlFor="startDate">From:</label>
+              <input type="date" id="startDate" className="filter-date" value={filterStartDate} onChange={(e) => setFilterStartDate(e.target.value)} />
+            </div>
+            <div className="filter-date-group">
+              <label htmlFor="endDate">To:</label>
+              <input type="date" id="endDate" className="filter-date" value={filterEndDate} onChange={(e) => setFilterEndDate(e.target.value)} />
+            </div>
+            <div className="filter-button-wrapper">
+              <button onClick={handleClearFilters} className="filter-button clear-filters-button">
+                Clear Filters
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="competitions-section" id="competitions-grid"> {/* id for hero CTA scroll target */}
-        <h2 className="section-title">Upcoming & Ongoing Competitions</h2>
+        <h2 className="section-title">Competitions</h2>
         {filteredCompetitions.length === 0 ? (
           <p className="no-competitions-message">No competitions found at the moment. Check back soon!</p>
         ) : (
