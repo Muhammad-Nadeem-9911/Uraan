@@ -98,3 +98,28 @@ a:hover {
 button, .hero-cta-button, input[type="submit"] {
   cursor: pointer; /* Ensure buttons use the standard pointer cursor */
 }
+
+/* 6. #root container styles (often set in App.jsx or index.html's linked CSS) */
+/* If you have these styles elsewhere (e.g., index.css or App.css), modify them there. */
+/* Otherwise, adding them here will work. */
+#root {
+  max-width: 1280px; /* Standard max-width for content area */
+  margin: 0 auto; /* Center the content area */
+  padding: 2rem; /* Default padding for larger screens */
+  /* text-align: center; */ /* Remove if you don't want all text in #root to be centered by default */
+                          /* Individual components should handle their text alignment. */
+}
+
+/* Responsive adjustments for #root padding */
+@media (max-width: 768px) {
+  #root {
+       padding: 1rem !important; /* Reduced padding for tablets and larger phones */
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+       padding: 0.5rem !important; /* Further reduced padding for smaller phones */
+    /* Consider 'padding: 0.5rem 0.25rem;' for even less side padding */
+  }
+}

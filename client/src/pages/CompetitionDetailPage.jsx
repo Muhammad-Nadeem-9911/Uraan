@@ -331,7 +331,7 @@ useEffect(() => {
 
       {/* Existing "Top 3 by Longest Time" - can be styled or integrated into main leaderboard later */}
       <section className="top-by-time-section">
-        <h3>Top Finishers by Longest Flight Time</h3>
+        <h3>Top Finishers</h3>
         <div className="top-finishers-grid">
           {firstPlaceByHighestTime && (
             <div className="top-finisher-card first-place">

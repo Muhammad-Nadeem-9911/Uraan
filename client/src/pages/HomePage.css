@@ -57,3 +57,38 @@
 .status-tag.status-ongoing { background-color: #4caf50; /* Green for ongoing */ }
 .status-tag.status-completed { background-color: #f44336; /* Red for completed */ }
 .status-tag.status-live { background-color: var(--accent-color); color: var(--text-color-primary); } /* Yellow for live */
+
+/* Mobile Responsiveness for HomePage */
+@media (max-width: 768px) {
+  .competitions-section {
+    padding: 1.5rem 0.75rem; /* Reduced padding for tablets/larger phones */
+  }
+
+  .section-title {
+    font-size: 1.8rem; /* Smaller title */
+    margin-bottom: 1.5rem;
+  }
+
+  .competitions-grid-layout {
+    /* The auto-fill with minmax should handle single column, but we can adjust gap */
+    gap: 1rem; /* Slightly reduced gap */
+    /* If you want to ensure it's always single column below 768px, uncomment below: */
+    /* grid-template-columns: 1fr; */
+  }
+
+  .loading-message,
+  .error-message,
+  .no-competitions-message {
+    font-size: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .competitions-section { padding: 1rem 0.5rem; }
+  .section-title { font-size: 1.6rem; margin-bottom: 1rem; }
+  .competitions-grid-layout { gap: 0.75rem; }
+  .loading-message,
+  .error-message,
+  .no-competitions-message { font-size: 0.9rem; padding: 1rem; }
+}

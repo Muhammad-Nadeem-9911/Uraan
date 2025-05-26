@@ -66,14 +66,6 @@ const Navbar = () => {
         ) : (
           // Not logged in as admin
           <>
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-              >
-                Home
-              </NavLink>
-            </li>
             {location.pathname !== '/admin/login' && ( // Don't show login button if already on login page
               <li>
                 <NavLink

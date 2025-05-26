@@ -3,7 +3,7 @@
 .competition-detail-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem 2rem; /* No top padding, handled by .main-content */
+  padding: 0 1rem 2rem; /* Default padding for larger screens */
 }
 
 /* Loading and Error Messages (can be globalized) */
@@ -33,9 +33,9 @@
 }
 
 .page-title-container h1 {
-  font-family: var(--font-heading);
-  font-size: 2.8rem; /* Or your desired title size */
-  color: var(--text-color-primary); /* Or var(--primary-color) */
+  font-family: var(--font-heading); /* Keep heading font */
+  font-size: 2.8rem; /* Desktop font size */
+  color: var(--text-color-primary);
   margin: 0; /* Remove default h1 margin */
   line-height: 1.2; /* Adjust line height for better readability if text wraps */
   word-wrap: break-word; /* Ensure long words without spaces can break */
@@ -45,9 +45,9 @@
 /* 2. Hero/Header Section */
 .competition-header {
   position: relative;
-  height: 50vh; /* Increased height */
-  min-height: 300px; /* Increased min-height */
-  max-height: 450px; /* Increased max-height */
+  height: 45vh; /* Adjusted height */
+  min-height: 280px; /* Adjusted min-height */
+  max-height: 400px; /* Adjusted max-height */
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   margin-bottom: 2rem; /* Keep space before stats block */
@@ -95,7 +95,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 2rem; /* Row and column gap */
-  font-size: 1rem;
+  font-size: 0.95rem; /* Slightly smaller meta font */
   /* If you want meta to be more prominent now title is gone, adjust font-size or padding */
 }
 
@@ -112,7 +112,7 @@
 .competition-stats-block {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
+  gap: 1.25rem; /* Slightly reduced gap */
   padding: 1.5rem;
   background-color: var(--background-color-light-alt); /* Or use glassmorphism */
   border-radius: var(--border-radius-lg);
@@ -140,7 +140,7 @@
 
 .stat-icon {
   font-size: 2.5rem; /* Adjust if using react-icons */
-  color: var(--primary-color);
+  color: var(--primary-color); /* Keep primary color */
   margin-bottom: 0.75rem;
 }
 
@@ -148,7 +148,7 @@
   font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-color-primary);
+  color: var(--text-color-primary); /* Keep primary text color */
   line-height: 1.1;
 }
 
@@ -161,7 +161,7 @@
 /* Specific styling for the status text within the stats block if needed */
 .status-stat-item .stat-value.status-text-value {
   font-size: 1.6rem; /* Slightly smaller than other stat values if it's text */
-  text-transform: uppercase;
+  text-transform: uppercase; /* Keep uppercase */
   letter-spacing: 0.5px;
   color: var(--primary-color); /* Or keep it var(--text-color-primary) */
 }
@@ -169,7 +169,7 @@
 
 /* 4. Leaderboard Section (Basic styles for now) */
 .leaderboard-section {
-  padding: 1.5rem;
+  padding: 1.5rem 1rem; /* Adjust horizontal padding */
   background-color: var(--background-color-light);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow-soft);
@@ -179,7 +179,7 @@
 .leaderboard-section h2 {
   text-align: center;
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem; /* Slightly reduced margin */
   color: var(--text-color-primary);
 }
 
@@ -195,9 +195,9 @@
 
 .leaderboard-table-container th,
 .leaderboard-table-container td {
-  padding: 0.85rem 1rem; /* Slightly more padding */
+  padding: 0.75rem 0.8rem; /* Reduced padding for smaller screens */
   text-align: center; /* Changed to center for horizontal alignment */
-  border-bottom: 1px solid var(--background-color-light-alt);
+  border-bottom: 1px solid var(--background-color-light-alt); /* Keep border */
   font-size: 0.95rem;
   vertical-align: middle; /* Align content vertically in cells */
   white-space: nowrap; /* Prevent text wrapping in cells where not desired */
@@ -220,8 +220,8 @@
 }
 
 .participant-avatar {
-  width: 40px;
-  height: 40px;
+  width: 35px; /* Slightly smaller avatar */
+  height: 35px; /* Slightly smaller avatar */
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--background-color-light-alt);
@@ -237,7 +237,7 @@
 .rank-cell {
   /* text-align: center !important; */ /* Already centered by the general td rule */
   width: 80px; /* Fixed width for rank column */
-}
+} /* Keep width for desktop sticky */
 
 .rank-badge {
   display: inline-block;
@@ -246,7 +246,7 @@
   font-weight: 700;
   border-radius: var(--border-radius-sm);
   color: white;
-  min-width: 2em; /* Ensure badge has some width even for single digit */
+  min-width: 1.8em; /* Slightly smaller min-width */
   text-align: center;
   background-color: var(--text-color-secondary); /* Default rank badge color */
 }
@@ -284,7 +284,7 @@
   background-color: #eef6ff; /* Light blue hover, adjust color as needed */
 }
 
-/* Sticky Column Styling - Apply only on screens wider than a mobile breakpoint (e.g., 768px) */
+/* --- Mobile Responsiveness --- */
 @media (min-width: 768px) { /* Adjust breakpoint as needed */
   .sticky-col {
     position: -webkit-sticky; /* Safari */
@@ -335,11 +335,293 @@
   }
 }
 
+/* Styles for the "Top Finishers by Longest Flight Time" section */
+.top-by-time-section {
+  margin-bottom: 2rem; /* Slightly reduced margin */
+  padding: 1.5rem;
+  background-color: var(--background-color-light); /* Match leaderboard section bg */
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-soft);
+}
+
+.top-by-time-section h3 {
+  text-align: center;
+  font-family: var(--font-heading);
+  color: var(--text-color-primary);
+  font-size: 1.6rem; /* Smaller title for desktop, can be overridden in mobile */
+  margin-bottom: 1.5rem;
+}
+
+.top-finishers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Desktop: larger cards */
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.top-finisher-card {
+  background-color: var(--background-color-light-alt);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem; /* Desktop padding */
+  text-align: center;
+  box-shadow: var(--box-shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 5px solid transparent; /* For place-specific color accent */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem; /* Desktop gap */
+}
+
+.top-finisher-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.finisher-rank-icon {
+  font-size: 2.5rem; /* Desktop icon size */
+  margin-bottom: 0.25rem;
+}
+
+.finisher-rank-text {
+  font-family: var(--font-heading);
+  font-size: 1.4rem; /* Desktop text size */
+  font-weight: 700;
+  color: var(--text-color-primary);
+}
+
+/* Styles for screens smaller than 768px (tablets and phones) */
+@media (max-width: 768px) {
+  .competition-detail-page {
+    padding: 0 0.2rem 1.5rem; /* Minimal horizontal padding on the main container */
+  }
+
+  .loading-message,
+  .error-message,
+  .info-message {
+    padding: 1.5rem;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .page-title-container {
+    padding: 1rem 0.75rem; /* Reduced horizontal padding for the title container */
+    margin-top: 1.5rem; /* Keep space after header */
+    margin-bottom: 1rem;
+  }
+
+  .page-title-container h1 {
+    font-size: 2rem; /* Smaller title */
+  }
+
+  .competition-header {
+    height: 30vh; /* Shorter header */
+    min-height: 180px;
+    max-height: 280px;
+    margin-bottom: 1.5rem;
+  }
+
+  .header-content {
+    padding: 1rem 1rem; /* Reduced horizontal padding for header content */
+  }
+
+  .header-meta {
+    flex-direction: column; /* Stack meta items */
+    gap: 0.5rem; /* Reduced gap */
+    font-size: 0.9rem; /* Smaller font */
+    align-items: flex-start; /* Align items to the left */
+  }
+
+  .competition-stats-block {
+    grid-template-columns: repeat(2, 1fr); /* Arrange stats items in a 2x2 grid */
+    gap: 0.75rem; /* Reduced gap */
+    padding: 0.75rem; /* Reduced overall padding for the block */
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-item {
+    flex-direction: column; /* Stack icon, value, label vertically within the card */
+    align-items: center; /* Center items horizontally in the card */
+    text-align: center; /* Center text within the card */
+    padding: 0.75rem; /* Padding for the smaller card */
+  }
+
+  .stat-item .stat-icon {
+    font-size: 1.8rem; /* Adjusted icon size for smaller card */
+    margin-bottom: 0.5rem; /* Space below icon */
+    margin-right: 0; /* Remove right margin from previous layout */
+    /* flex-shrink: 0; */ /* Not strictly needed for column layout */
+  }
+
+  .stat-item .stat-value {
+    font-size: 1.3rem; /* Adjusted value size */
+    line-height: 1.2;
+    /* flex-grow: 1; */ /* Not strictly needed for column layout */
+    text-align: center; /* Ensure value is centered */
+  }
+
+  .stat-item .stat-label {
+    font-size: 0.75rem; /* Adjusted label size */
+    margin-top: 0.25rem; /* Space above label */
+    text-align: center; /* Ensure label is centered */
+    /* flex-shrink: 0; */ /* Not strictly needed for column layout */
+    margin-left: 0; /* Remove left margin from previous layout */
+  }
+
+  .status-stat-item .stat-value.status-text-value {
+     font-size: 1.2rem; /* Smaller status text */
+  }
+
+  .top-by-time-section {
+    margin-bottom: 1.5rem; /* Keep margin */
+    padding: 1rem;
+  }
+
+  .top-by-time-section h3 {
+    font-size: 1.4rem; /* Smaller title */
+    margin-bottom: 1rem;
+  }
+
+  .top-finishers-grid {
+    /* Allow cards to sit side-by-side, fitting as many as possible with a min width */
+    display: grid; /* Ensure it's a grid container */
+    grid-template-columns: repeat(2, 1fr); /* Define 2 columns for the 2nd/3rd place cards */
+    gap: 0.75rem; /* Adjust gap as needed */
+  }
+
+  .top-finisher-card {
+    padding: 0.6rem; /* Further reduced padding for smaller cards */
+    gap: 0.25rem; /* Reduced gap between items in the card */
+    min-height: 160px; /* Example: Set a min-height to help equalize card heights */
+    /* Ensure flex properties are suitable for content alignment within the new height */
+    justify-content: center; /* Or space-around, space-between depending on desired internal alignment */
+  }
+  .top-finisher-card:first-child {
+    grid-column: 1 / -1; /* Make the first card span both columns */
+    /* Optionally, adjust its min-height or padding if it needs to be different */
+  }
+  .finisher-rank-icon { font-size: 1.7rem; margin-bottom: 0.1rem; }
+  .finisher-rank-text { font-size: 0.85rem; }
+  .finisher-name { font-size: 0.85rem; margin-top: 0.25rem; }
+  .finisher-time { font-size: 0.8rem; }
+  .finisher-official-rank { font-size: 0.65rem; margin-top: 0.1rem; } /* Smaller official rank */
+
+  .leaderboard-section {
+    padding: 1rem 0.75rem; /* Reduced horizontal padding for the leaderboard section */
+    margin-top: 1.5rem;
+  }
+
+  .leaderboard-section h2 {
+    font-size: 1.6rem; /* Smaller title */
+    margin-bottom: 1rem;
+  }
+
+  .leaderboard-table-container th,
+  .leaderboard-table-container td {
+    padding: 0.6rem 0.7rem; /* Further reduced padding */
+    font-size: 0.85rem; /* Smaller font */
+  }
+
+  .leaderboard-table-container th {
+    font-size: 0.75rem; /* Smaller header font */
+  }
+
+  .participant-avatar {
+    width: 30px; /* Smaller avatar */
+    height: 30px; /* Smaller avatar */
+  }
+
+  .rank-badge {
+    width: 24px; /* Smaller badge */
+    height: 24px; /* Smaller badge */
+    line-height: 24px;
+    font-size: 0.8em; /* Smaller font */
+    min-width: 1.5em;
+  }
+
+  .total-time-cell {
+    font-size: 0.9rem; /* Smaller total time font */
+  }
+
+  .time-chip {
+    padding: 0.2em 0.5em; /* Smaller chip padding */
+    font-size: 0.75rem; /* Smaller chip font */
+  }
+
+  /* Sticky columns are disabled below 768px by the min-width media query */
+  /* If you needed sticky columns on mobile, you'd add styles here */
+}
+
+/* Styles for screens smaller than 480px (small phones) */
+@media (max-width: 480px) {
+  .competition-detail-page {
+    padding: 0 0.1rem 1rem; /* Minimal horizontal padding on the main container */
+  }
+
+  .page-title-container h1 { font-size: 1.8rem; } /* Even smaller title */
+  .competition-header { height: 25vh; min-height: 160px; max-height: 250px; } /* Even shorter header */
+  .header-content { padding: 0.75rem 1rem; } /* Even less padding */
+  .header-meta { font-size: 0.8rem; } /* Further reduced meta font */
+
+  .competition-stats-block { /* Keep 2x2 grid */
+    gap: 0.5rem; /* Further reduced gap for 2x2 grid */
+    padding: 0.75rem;
+  }
+  .stat-item {
+    padding: 0.5rem; /* Further reduced padding for very small cards */
+  }
+  .stat-item .stat-icon {
+    font-size: 1.5rem; /* Further reduced icon size */
+    margin-bottom: 0.3rem;
+  }
+  .stat-item .stat-value {
+    font-size: 1.1rem; /* Further reduced value size */
+  }
+  .stat-item .stat-label {
+    font-size: 0.65rem; /* Further reduced label size */
+    margin-top: 0.2rem;
+  }
+  .status-stat-item .stat-value.status-text-value { font-size: 1.1rem; } /* Even smaller status text */
+
+  .top-by-time-section { padding: 0.75rem 0.5rem; } /* Reduced horizontal padding */
+  .top-by-time-section h3 { font-size: 1.3rem; } /* Even smaller title */
+  .top-finishers-grid {
+    /* Inherits 2-column layout from 768px breakpoint, or redefine if needed */
+    /* grid-template-columns: repeat(2, 1fr); */
+    gap: 0.5rem;
+  }
+  .top-finisher-card {
+    padding: 0.5rem; gap: 0.15rem; /* Further reduced padding and internal gap */
+    min-height: 140px; /* Adjust min-height for very small screens */
+  }
+  /* :first-child rule for grid-column span is inherited */
+  .finisher-rank-icon { font-size: 1.5rem; } /* Further reduced icon */
+  .finisher-rank-text { font-size: 0.75rem; } /* Further reduced text */
+  .finisher-name { font-size: 0.7rem; } /* Further reduced name */
+  .finisher-time { font-size: 0.65rem; } /* Further reduced time */
+  .finisher-official-rank { font-size: 0.55rem; } /* Further reduced official rank */
+
+  .leaderboard-section { padding: 0.75rem 0.25rem; } /* Even less horizontal padding */
+  .leaderboard-section h2 { font-size: 1.4rem; } /* Even smaller title */
+
+  .leaderboard-table-container th,
+  .leaderboard-table-container td {
+    padding: 0.5rem 0.6rem; /* Even less padding */
+    font-size: 0.8rem; /* Even smaller font */
+  }
+  .leaderboard-table-container th { font-size: 0.7rem; } /* Even smaller header font */
+
+  .participant-avatar { width: 25px; height: 25px; } /* Even smaller avatar */
+  .rank-badge { width: 20px; height: 20px; line-height: 20px; font-size: 0.7em; min-width: 1.3em; } /* Even smaller badge */
+  .total-time-cell { font-size: 0.85rem; } /* Adjusted total time font */
+  .time-chip { padding: 0.15em 0.4em; font-size: 0.7rem; } /* Even smaller chip */
+}
+
 /* Total Time Cell Styling */
 .total-time-cell {
   font-weight: bold;
   color: var(--primary-color);
-  font-size: 1.05rem; /* Slightly larger */
+  font-size: 1rem; /* Adjusted size */
 }
 
 /* Pigeon Arrival Time Chips */
@@ -350,7 +632,7 @@
 .time-chip { /* Style the span inside the cell as a chip */
   display: inline-block;
   padding: 0.3em 0.7em;
-  background-color: var(--background-color-light-alt);
+  background-color: var(--background-color-light-alt); /* Keep background */
   border: 1px solid #ddd; /* Softer border for chips */
   border-radius: var(--border-radius-md);
   font-size: 0.85rem;
@@ -377,63 +659,8 @@
   z-index: 2; 
 }
 
-/* Styles for the "Top Finishers by Longest Flight Time" section */
-.top-by-time-section {
-  margin-bottom: 2.5rem;
-  padding: 1.5rem;
-  background-color: var(--background-color-light); /* Match leaderboard section bg */
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--box-shadow-soft);
-}
-
-.top-by-time-section h3 {
-  text-align: center;
-  font-family: var(--font-heading);
-  color: var(--text-color-primary);
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.top-finishers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-.top-finisher-card {
-  background-color: var(--background-color-light-alt);
-  border-radius: var(--border-radius-md);
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: var(--box-shadow-soft);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-left: 5px solid transparent; /* For place-specific color accent */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.top-finisher-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: var(--box-shadow-medium);
-}
-
-.finisher-rank-icon {
-  font-size: 2.8rem;
-  margin-bottom: 0.25rem;
-}
-
-.finisher-rank-text {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text-color-primary);
-}
-
 .finisher-name {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Slightly smaller name */
   font-weight: 600;
   color: var(--text-color-primary);
   margin-top: 0.5rem;
@@ -441,7 +668,7 @@
 
 .finisher-time {
   font-size: 1.1rem;
-  color: var(--primary-color);
+  color: var(--primary-color); /* Keep color */
   font-weight: bold;
 }
 
