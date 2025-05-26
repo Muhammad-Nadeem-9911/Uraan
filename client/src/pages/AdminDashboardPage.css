@@ -243,3 +243,21 @@
   }
   /* .admin-summary-cards, .admin-section { padding-left: 0.25rem; padding-right: 0.25rem; } */
 }
+
+@media (max-width: 420px) { /* Targeting very narrow screens like Galaxy S8+ */
+  .admin-dashboard-page {
+    padding: 1rem 0.2rem; /* Even more reduced side padding for the page */
+  }
+  .admin-summary-cards {
+    gap: 0.75rem; /* Reduce gap between summary cards */
+  }
+  .summary-card {
+    padding: 1rem; /* Reduce padding inside summary cards */
+  }
+  .summary-card-title {
+    font-size: 1rem; /* Smaller title in card */
+  }
+  .summary-card-value {
+    font-size: 1.8rem; /* Smaller value in card */
+  }
+}

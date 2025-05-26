@@ -57,3 +57,24 @@
   background-color: var(--primary-color, #00aaff);
   color: var(--dark-mode-background, white); /* Adjust text color on hover for contrast */
 }
+
+/* Responsive adjustments for very narrow screens */
+@media (max-width: 420px) { /* Target screens narrower than typical small phones */
+  .admin-navbar {
+    padding: 0 1rem; /* Reduce horizontal padding */
+  }
+  .admin-navbar-brand {
+    font-size: 1.2rem; /* Slightly smaller brand text */
+  }
+  .admin-navbar-menu {
+    gap: 0.75rem; /* Reduce gap between menu items */
+  }
+  .admin-navbar-link {
+    font-size: 0.8rem; /* Smaller link text */
+    padding: 0.4rem 0.6rem; /* Adjust padding */
+  }
+  .admin-navbar-button {
+    font-size: 0.8rem; /* Smaller button text */
+    padding: 0.4rem 0.8rem; /* Adjust padding */
+  }
+}
