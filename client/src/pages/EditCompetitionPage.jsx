@@ -192,7 +192,7 @@ const EditCompetitionPage = () => {
 
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="expectedPigeonsPerParticipant">Expected Pigeons per Participant:</label>
+            <label htmlFor="expectedPigeonsPerParticipant">Pigeons per Participant:</label>
             <input type="number" id="expectedPigeonsPerParticipant" name="expectedPigeonsPerParticipant" value={formData.expectedPigeonsPerParticipant} onChange={handleChange} min="1" required />
           </div>
           <div className="form-group"> {/* Status field moved here, no longer full-width */}

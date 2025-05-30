@@ -141,6 +141,19 @@
     margin: 1rem;
     padding: 1.5rem;
   }
+  .record-times-page h2 {
+    font-size: 1.6rem; /* Slightly smaller for mobile */
+    margin-bottom: 0.75rem;
+  }
+  .record-times-page .context-info {
+    font-size: 1rem; /* Adjust for mobile */
+    margin-bottom: 0.3rem;
+  }
+  .record-times-page .competition-start-time {
+    font-size: 0.85rem; /* Adjust for mobile */
+    margin-bottom: 1.25rem; /* Reduce bottom margin */
+  }
+
   .record-times-form .pigeon-time-entry {
     flex-direction: column;
     align-items: stretch;
@@ -148,5 +161,10 @@
   .record-times-form .pigeon-time-entry label {
     flex-basis: auto;
     margin-bottom: 0.5rem;
+  }
+  .record-times-form .pigeon-time-entry input[type="datetime-local"] {
+    width: 100%; /* Ensure it takes full available width */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    font-size: 0.95rem; /* Slightly smaller font for better fit if needed */
   }
 }

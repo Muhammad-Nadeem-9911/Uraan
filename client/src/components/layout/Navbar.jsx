@@ -47,35 +47,52 @@ const Navbar = () => {
       </div>
       <ul className="navbar-links">
         {isAdminLoggedIn ? (
-          // Admin is logged in (and on a public page or /admin/login page)
-          <>
-            <li>
-              <NavLink
-                to="/admin/dashboard"
-                className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-              >
-                Admin Dashboard
-              </NavLink>
-            </li>
-            <li>
-              <button onClick={handleLogout} className="nav-button logout-button">
-                Logout
-              </button>
-            </li>
-          </>
-        ) : (
-          // Not logged in as admin
-          <>
-            {location.pathname !== '/admin/login' && ( // Don't show login button if already on login page
+          // Admin is logged in.
+          // Show "Admin Dashboard" and "Logout" ONLY if they are on the /admin/login page.
+          // On public pages, a logged-in admin will see the "Admin Login" link from the block below.
+          location.pathname === '/admin/login' ? (
+            <>
               <li>
                 <NavLink
-                  to="/admin/login"
-                  className={({ isActive }) => isActive ? 'nav-link active login-button' : 'nav-link login-button'}
+                  to="/admin/dashboard"
+                  className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
                 >
-                  Admin Login
+                  Admin Dashboard
                 </NavLink>
               </li>
-            )}
+              <li>
+                <button onClick={handleLogout} className="nav-button logout-button">
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            // Admin is logged in but on a public page.
+            // Fall through to the logic that shows "Admin Login" if not on /admin/login page.
+            // This ensures "Admin Dashboard" & "Logout" don't show on public pages for logged-in admins.
+            // The "Admin Login" link will be rendered by the next conditional block.
+            null // Or explicitly render the "Admin Login" link here if preferred, but the structure below handles it.
+          )
+        ) : null /* Not logged in as admin, handled by the block below */}
+
+        {/* Show "Admin Login" link if:
+            1. Not on the /admin/login page itself.
+            AND
+            2. EITHER admin is not logged in, OR admin is logged in but on a public page (covered by isAdminLoggedIn ? null : ... above).
+            This simplifies to: always show if not on /admin/login, unless admin is logged in AND on /admin/login (handled above).
+        */}
+        {location.pathname !== '/admin/login' && (
+          <>
+            {/* This link will now show for non-logged-in users on public pages,
+                and for logged-in admins on public pages. */}
+            <li>
+              <NavLink
+                to="/admin/login"
+                className={({ isActive }) => isActive ? 'nav-link active login-button' : 'nav-link login-button'}
+              >
+                Admin Login
+              </NavLink>
+            </li>
           </>
         )}
       </ul>

@@ -7,6 +7,7 @@
   background-color: var(--background-color-light);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow-medium);
+  text-align: left; /* Ensure content within the page aligns left by default */
 }
 
 .edit-competition-page h2 {
@@ -51,6 +52,7 @@
   background-color: var(--background-color-light-alt);
   border: 1px solid var(--form-input-border-color, #ccc);
   border-radius: var(--border-radius-md);
+  box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -131,10 +133,15 @@
   .edit-competition-form .form-group {
     flex-basis: 100%;
     margin-bottom: 1rem; /* Add space between stacked groups */
+    min-width: 0; /* Allow the group to shrink below 250px on small screens */
   }
   .edit-competition-page {
     margin: 1rem;
     padding: 1.5rem;
+  }
+  .edit-competition-page h2 {
+    font-size: 1.75rem; /* Adjust font size for mobile */
+    margin-bottom: 1.5rem; /* Adjust margin for mobile */
   }
   .edit-competition-form .form-actions {
     flex-direction: column;
