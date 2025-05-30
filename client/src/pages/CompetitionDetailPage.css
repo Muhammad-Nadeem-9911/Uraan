@@ -26,10 +26,13 @@
 
 /* 1. Page Title Section (New) */
 .page-title-container {
-  padding: 1.5rem 1rem; /* Padding for top/bottom and sides */
-  text-align: center; /* Or left, based on preference */
+  /* padding: 1.5rem 1rem; */ /* Padding will be handled by title-and-button-wrapper if needed */
+  /* text-align: center; */ /* Replaced by flex for centering */
   margin-top: 2rem; /* Space after the hero section */
   margin-bottom: 1.5rem; /* Space before the stats block */
+  display: flex;
+  justify-content: center; /* Centers the title-and-button-wrapper */
+  align-items: center; /* Vertically align if title-and-button-wrapper has a fixed height */
 }
 
 .page-title-container h1 {
@@ -40,6 +43,54 @@
   line-height: 1.2; /* Adjust line height for better readability if text wraps */
   word-wrap: break-word; /* Ensure long words without spaces can break */
   overflow-wrap: break-word; /* Standard property for word wrapping */
+}
+
+/* .title-and-button-wrapper is removed as the button is relocated */
+
+.download-report-icon-button {
+  position: absolute; /* Position relative to .competition-header */
+  bottom: 1.5rem; /* Adjust as needed */
+  right: 1.5rem;  /* Adjust as needed */
+  z-index: 3; /* Above header-content and header-overlay */
+
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark background for visibility */
+  border: none;
+  color: white; /* Icon color white for contrast */
+  font-size: 1.8rem; /* Adjust icon size */
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; /* Slightly larger for better touch target */
+  height: 48px; /* Slightly larger */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow */
+}
+
+.download-report-icon-button:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.6); /* Darker on hover */
+  transform: scale(1.1);
+}
+
+.download-report-icon-button:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.2); /* Disabled background */
+  transform: none;
+  opacity: 0.6;
+}
+
+/* Spinner specifically for the PDF download button */
+.loading-spinner-pdf {
+  width: 1.8rem; /* Adjust size to fit well within the button */
+  height: 1.8rem;
+  border: 3px solid rgba(255, 255, 255, 0.3); /* Lighter track for the spinner (white transparent) */
+  border-top-color: white; /* Spinner active color (white) */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 /* 2. Hero/Header Section */
@@ -216,7 +267,8 @@
 .participant-info-cell {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center flex items horizontally if td is wider */
+  /* justify-content: center; */ /* Removed to allow items to align to start/end */
+  gap: 10px; /* Add gap for spacing between avatar/icon and name */
 }
 
 .participant-avatar {
@@ -227,10 +279,18 @@
   border: 2px solid var(--background-color-light-alt);
 }
 
+.participant-avatar-icon {
+  width: 35px; /* Match .participant-avatar width */
+  height: 35px; /* Match .participant-avatar height */
+  color: var(--text-color-secondary); /* Or a more prominent color if needed */
+  border-radius: 50%; /* Ensure container is round if icon isn't perfectly filling */
+}
+
 .participant-name-text {
   font-weight: 500;
   color: var(--text-color-primary);
-  /* text-align: left; */ /* If you want the name itself to be left-aligned within its centered container */
+  flex-grow: 1; /* Allow the name to take up available space */
+  text-align: left; /* Align text to the left within its container */
 }
 
 /* Rank Badge Styling */
@@ -413,6 +473,13 @@
   .page-title-container h1 {
     font-size: 2rem; /* Smaller title */
   }
+  .download-report-icon-button {
+    font-size: 1.7rem; /* Adjust icon size for tablets */
+    width: 44px;
+    height: 44px;
+    bottom: 1rem;
+    right: 1rem;
+  }
 
   .competition-header {
     height: 30vh; /* Shorter header */
@@ -530,6 +597,10 @@
     width: 30px; /* Smaller avatar */
     height: 30px; /* Smaller avatar */
   }
+  .participant-avatar-icon {
+    width: 30px; /* Match smaller avatar */
+    height: 30px; /* Match smaller avatar */
+  }
 
   .rank-badge {
     width: 24px; /* Smaller badge */
@@ -560,6 +631,13 @@
 
   .page-title-container h1 { font-size: 1.8rem; } /* Even smaller title */
   .competition-header { height: 25vh; min-height: 160px; max-height: 250px; } /* Even shorter header */
+  .download-report-icon-button {
+    font-size: 1.6rem; /* Adjust icon size for small phones */
+    width: 40px;
+    height: 40px;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
   .header-content { padding: 0.75rem 1rem; } /* Even less padding */
   .header-meta { font-size: 0.8rem; } /* Further reduced meta font */
 
@@ -612,6 +690,10 @@
   .leaderboard-table-container th { font-size: 0.7rem; } /* Even smaller header font */
 
   .participant-avatar { width: 25px; height: 25px; } /* Even smaller avatar */
+  .participant-avatar-icon {
+    width: 25px; /* Match even smaller avatar */
+    height: 25px; /* Match even smaller avatar */
+  }
   .rank-badge { width: 20px; height: 20px; line-height: 20px; font-size: 0.7em; min-width: 1.3em; } /* Even smaller badge */
   .total-time-cell { font-size: 0.85rem; } /* Adjusted total time font */
   .time-chip { padding: 0.15em 0.4em; font-size: 0.7rem; } /* Even smaller chip */
@@ -700,36 +782,7 @@
   color: #b0712d; /* Darker Bronze */
 }
 
-/* Download Report Button */
-.report-actions-container {
-  display: flex;
-  justify-content: center; /* Center the button */
-  margin-top: 1rem; /* Space above the button container */
-  margin-bottom: 2rem; /* Space below the button container */
-}
+/* Re-usable spin animation if not already defined elsewhere */
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.download-report-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.8rem 1.8rem;
-  border-radius: var(--border-radius-md);
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: var(--font-body);
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  box-shadow: var(--box-shadow-soft);
-}
-
-.download-report-button:hover:not(:disabled) {
-  background-color: var(--primary-color-dark);
-  box-shadow: var(--box-shadow-medium);
-}
-
-.download-report-button:disabled {
-  background-color: var(--neutral-color-light, #ccc);
-  color: var(--neutral-color-dark, #666);
-  cursor: not-allowed;
-  box-shadow: none;
-}
+/* Removed old .report-actions-container and .download-report-button styles as they are no longer used */

@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
 import './CompetitionDetailPage.css'; // Import the CSS for styling
-import jsPDF from 'jspdf'; // Import jsPDF constructor
+// import jsPDF from 'jspdf'; // No longer needed for client-side PDF generation
 // import autoTable from 'jspdf-autotable'; // No longer needed for client-side table generation
-import { FaCrown, FaMedal, FaFilePdf } from 'react-icons/fa'; // Import icons, added FaFilePdf
+import { FaCrown, FaMedal, FaFilePdf, FaUserCircle } from 'react-icons/fa'; // Import icons, added FaFilePdf and FaUserCircle
 import Confetti from 'react-confetti'; // Import Confetti
 import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
 
@@ -17,9 +17,6 @@ const CompetitionDetailPage = () => {
   const [competitionResults, setCompetitionResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [weatherData, setWeatherData] = useState(null);
-  const [weatherLoading, setWeatherLoading] = useState(false);
-  const [weatherError, setWeatherError] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: undefined, height: undefined });
   const [animatedChips, setAnimatedChips] = useState({}); // Stores { 'participantId-pigeonNumber': true }
@@ -152,75 +149,6 @@ useEffect(() => {
     prevCompetitionResultsRef.current = competitionResults;
   }, [competitionResults]); // This effect depends on competitionResults changing
 
-
-  const fetchWeatherData = useCallback(async (locationName) => {
-    if (!locationName || locationName === 'N/A') {
-      setWeatherError("Location not specified.");
-      setWeatherData(null);
-      return;
-    }
-    const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
-    if (!apiKey) {
-      console.error("Weather API key (VITE_WEATHER_API_KEY) is missing in .env file.");
-      setWeatherError("Weather service not configured.");
-      setWeatherData(null);
-      return;
-    }
-
-    setWeatherLoading(true);
-    setWeatherError(null);
-    try {
-      const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(locationName)}&appid=${apiKey}&units=metric`
-      );
-      setWeatherData(weatherResponse.data);
-    } catch (err) {
-      console.error("Error fetching weather data:", err);
-      setWeatherError(err.response?.data?.message || "Could not fetch weather.");
-      setWeatherData(null);
-    } finally {
-      setWeatherLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (competitionResults && competitionResults.location && competitionResults.location !== 'N/A') {
-      fetchWeatherData(competitionResults.location);
-    } else if (competitionResults) { // If competitionResults loaded but no valid location
-        setWeatherData(null); // Clear previous weather data
-        // Optionally set a specific message if location is explicitly N/A or missing
-        if (!competitionResults.location || competitionResults.location === 'N/A') setWeatherError("Location not specified.");
-    }
-  }, [competitionResults, fetchWeatherData]);
-
-  const getWeatherDisplay = () => {
-    if (weatherLoading) return "Loading weather...";
-
-    if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
-      const mainCondition = weatherData.weather[0].main;
-      const description = weatherData.weather[0].description;
-      const temp = weatherData.main?.temp;
-      // const iconCode = weatherData.weather[0].icon;
-      // Example with icon: return <><img src={`http://openweathermap.org/img/wn/${iconCode}.png`} alt={description} /> {`${mainCondition}, ${temp}°C`}</>;
-      return `${mainCondition} (${description})${temp !== undefined ? `, ${temp.toFixed(1)}°C` : ''}`;
-    }
-
-    // Fallback to manually entered weather or error messages
-    if (weatherError && weatherError !== "Location not specified.") {
-        // If there was an error fetching, but we have a manually entered weather, show that with a note
-        const liveErrorMsg = `Live data unavailable`; // More user-friendly short error
-        return competitionResults?.weather && competitionResults.weather !== 'N/A'
-            ? `${competitionResults.weather} (${liveErrorMsg})`
-            : `N/A (${liveErrorMsg})`;
-    }
-    // If location was not specified for API call
-    if (weatherError === "Location not specified.") {
-        return competitionResults?.weather || 'N/A (Location not specified)';
-    }
-
-    return competitionResults?.weather || 'N/A'; // Default fallback
-  };
-
   const handleDownloadReport = async () => {
     if (!competitionResults) return;
     setIsDownloadingReport(true);
@@ -232,32 +160,34 @@ useEffect(() => {
       // or transform it as needed by your server's HTML template.
       console.log("Sending this Data to PDF:", competitionResults);
       const {
-        competitionName,
-        competitionDate: competitionDateValue,
-        competitionStartTime: competitionStartTimeValue,
-        location,
-        status,
-        weather,
-        totalPigeonsOverall,
-        results,
-        expectedPigeonsPerParticipant,
-        coverImage, // Assuming coverImage now holds the URL.
-        description,
+        competitionName, // This is competitionResults.competitionName
+        competitionDate, // This is competitionResults.competitionDate
+        competitionStartTime, // This is competitionResults.competitionStartTime
+        location,        // This is competitionResults.location
+        status,          // This is competitionResults.status
+        // weather,      // weather is not typically part of the core competition details for the report in this way
+        // totalPigeonsOverall, // This is not directly used in the reportData structure below, but good to have if needed
+        results,         // This is competitionResults.results
+        expectedPigeonsPerParticipant, // This is competitionResults.expectedPigeonsPerParticipant
+        coverImage,      // This is competitionResults.coverImage
+        description,     // This is competitionResults.description
+        // Potentially, Urdu specific fields from competitionResults:
+        // nameUrdu, locationUrdu, statusUrdu, descriptionUrdu (if they exist on competitionResults)
       } = competitionResults;
       const reportData = {
         reportTitleUrdu: "مقابلے کی تفصیلی رپورٹ",
         competition: {
           name: competitionName,
-          nameUrdu: competitionName, // Assuming same name for now
-          date: competitionDateValue,
+          nameUrdu: competitionResults.nameUrdu, // Use actual nameUrdu from results, or undefined
+          date: competitionDate,
           location,
-          locationUrdu: location, // Assuming same location for now
-          startTime: competitionStartTimeValue,
+          locationUrdu: competitionResults.locationUrdu, // Use actual locationUrdu, or undefined
+          startTime: competitionStartTime,
           status,
-          statusUrdu: status, // Assuming same status for now
-          coverImageUrl: coverImage,  // Include cover image URL
+          statusUrdu: competitionResults.statusUrdu, // Use actual statusUrdu, or undefined
+          coverImageUrl: coverImage,
           description: description,
-          descriptionUrdu: description,
+          descriptionUrdu: competitionResults.descriptionUrdu, // Use actual descriptionUrdu, or undefined
           expectedPigeonsPerParticipant: expectedPigeonsPerParticipant, // Add this line
         },
         participants: results.map(p => ({ // Send only necessary fields for results
@@ -349,7 +279,6 @@ useEffect(() => {
     location,                   // This will be undefined if not in payload
     coverImage,                 // This will be undefined if not in payload
     status,                     // Destructure the competition status
-    weather,                    // This will be undefined if not in payload
     totalPigeonsOverall,        // Assuming this field exists for total pigeons in comp
     results: originalResults,
     expectedPigeonsPerParticipant
@@ -401,36 +330,40 @@ useEffect(() => {
       )}
       {/* 2. Hero/Header Section */}
       <header className="competition-header">
-        <div className="header-background-image" style={{ backgroundImage: `url(${coverImage || '/images/default-banner.jpg'})` }}>
+        <div
+          className="header-background-image"
+          style={{
+            backgroundImage: coverImage
+              ? `url(${coverImage})`
+              : 'linear-gradient(135deg, #232526 0%, #414345 100%)', // Default dark gradient
+          }}
+        >
           <div className="header-overlay"></div>
         </div>
         <div className="header-content">
           <div className="header-meta">
             <span>Date: {competitionFullDate}</span>
             <span>Location: {location || 'N/A'}</span>
-            <span className="weather-info">
-              {getWeatherDisplay()}
-            </span>
           </div>
+          <button
+            onClick={handleDownloadReport}
+            className="download-report-icon-button"
+            disabled={isDownloadingReport || loading || !competitionResults}
+            title="Download Report" // Tooltip for accessibility
+          >
+            {isDownloadingReport ? (
+              <div className="loading-spinner-pdf"></div>
+            ) : (
+              <FaFilePdf />
+            )}
+          </button>
         </div>
       </header>
 
-      {/* Page Title Section - MOVED HERE (Below Hero) */}
+      {/* Page Title Section - Button moved to header */}
       <div className="page-title-container">
         <h1 dir="auto">{competitionName}</h1>
       </div>
-
-      {/* Download Report Button Section */}
-      <div className="report-actions-container">
-        <button
-          onClick={handleDownloadReport}
-          className="download-report-button"
-          disabled={isDownloadingReport || loading || !competitionResults}
-        >
-          {isDownloadingReport ? 'Generating PDF...' : <><FaFilePdf /> Download Report</>}
-        </button>
-      </div>
-
       {/* 3. Competition Stats Block */}
       <section className="competition-stats-block">
         <div className="stat-item">
@@ -525,8 +458,16 @@ useEffect(() => {
                         <span className="rank-badge">{result.rank}</span>
                       </td>
                       <td className="sticky-col sticky-col-participant participant-info-cell">
-                        <img src={result.participantPictureUrl || '/images/default-avatar.png'} alt={result.participantName} className="participant-avatar" />
-                        <span className="participant-name-text" dir="auto">{result.participantName}</span> {/* Already had dir="auto", good! */}
+                        {result.participantPictureUrl ? (
+                          <img
+                            src={result.participantPictureUrl}
+                            alt={result.participantName}
+                            className="participant-avatar"
+                          />
+                        ) : (
+                          <FaUserCircle className="participant-avatar-icon" />
+                        )}
+                        <span className="participant-name-text" dir="auto">{result.participantName}</span>
                       </td>
                       <td className="sticky-col sticky-col-pigeons-returned">{result.numberOfPigeonsRecorded} / {expectedPigeonsPerParticipant || 'N/A'}</td>
                       {expectedPigeonsPerParticipant > 0 && Array.from({ length: expectedPigeonsPerParticipant }, (_, i) => {
