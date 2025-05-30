@@ -5,6 +5,11 @@ FROM node:18-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Create an empty .env file to prevent ENOENT errors if dotenv (or other code)
+# tries to load it. Actual environment variables should be supplied by Render's
+# environment settings.
+RUN touch .env
+
 # Install apt-utils to potentially reduce some apt warnings, and then system dependencies for Puppeteer.
 # The "mkdir -p /var/lib/apt/lists/partial" is a speculative fix:
 # if the error is specifically about creating this directory on a read-only fs,
