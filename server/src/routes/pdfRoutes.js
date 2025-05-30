@@ -1,5 +1,5 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core'); // Use puppeteer-core
 const fs = require('fs');
 const path = require('path');
 
@@ -513,9 +513,21 @@ router.post('/generate-report-pdf', async (req, res) => {
     try {
         const reportData = req.body; // Data from your React app
 
-        const browser = await puppeteer.launch({
+        const launchOptions = {
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser', // Standard path for system-installed Chromium
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'] // Recommended for server environments
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage', // Crucial for resource-constrained environments like Docker/Render
+                '--disable-gpu',           // Often helpful in headless environments
+                '--no-zygote',             // Can sometimes help with startup issues
+                // '--single-process'      // Consider if other args don't resolve issues, but can impact performance
+            ]
+        };
+
+        const browser = await puppeteer.launch({
+            ...launchOptions
         });
         const page = await browser.newPage();
 
