@@ -9,6 +9,7 @@ const participantRoutes = require('./modules/participants/participant.routes');
 const pigeonFlightRoutes = require('./modules/pigeonFlights/pigeonFlight.routes');
 const errorHandler = require('./common/middleware/errorHandler');
 const heroSlideRoutes = require('./modules/heroSlides/heroSlide.routes'); // New
+const pdfRoutes = require('./routes/pdfRoutes'); // Import the PDF routes
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/participants', participantRoutes); // General participant routes
 app.use('/api/pigeonflights', pigeonFlightRoutes);
 app.use('/api/hero-slides', heroSlideRoutes); // Add this line for the new carousel slides
+app.use('/api/pdf', pdfRoutes); // Mount the PDF generation routes
 
 // Global error handler - should be the last middleware
 app.use(errorHandler);

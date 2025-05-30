@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
 import './CompetitionDetailPage.css'; // Import the CSS for styling
-import { FaCrown, FaMedal } from 'react-icons/fa'; // Import icons
+import jsPDF from 'jspdf'; // Import jsPDF constructor
+// import autoTable from 'jspdf-autotable'; // No longer needed for client-side table generation
+import { FaCrown, FaMedal, FaFilePdf } from 'react-icons/fa'; // Import icons, added FaFilePdf
 import Confetti from 'react-confetti'; // Import Confetti
 import { motion, AnimatePresence } from 'framer-motion'; // Import framer-motion
 
@@ -21,6 +23,7 @@ const CompetitionDetailPage = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: undefined, height: undefined });
   const [animatedChips, setAnimatedChips] = useState({}); // Stores { 'participantId-pigeonNumber': true }
+  const [isDownloadingReport, setIsDownloadingReport] = useState(false);
   const prevCompetitionResultsRef = useRef(); // To store previous results for comparison
 
   const fetchResults = useCallback(async () => { // Encapsulate fetch logic
@@ -136,11 +139,12 @@ useEffect(() => {
         Object.keys(newAnimated).forEach(key => {
           setTimeout(() => {
             setAnimatedChips(prev => {
-              const newState = { ...prev };
-              delete newState[key];
-              return newState;
+              // Use functional update to ensure 'prev' is the latest state
+              const { [key]: _, ...rest } = prev; // Destructure to remove the key
+              return rest;
             });
-          }, 59000); // Duration for the animation class to be applied (approx. 1 minute)
+          }, 2000); // Duration for the animation class to be applied (e.g., 2 seconds)
+                      // Match this to your CSS animation duration or use onAnimationEnd if feasible.
         });
       }
     }
@@ -204,9 +208,10 @@ useEffect(() => {
     // Fallback to manually entered weather or error messages
     if (weatherError && weatherError !== "Location not specified.") {
         // If there was an error fetching, but we have a manually entered weather, show that with a note
+        const liveErrorMsg = `Live data unavailable`; // More user-friendly short error
         return competitionResults?.weather && competitionResults.weather !== 'N/A'
-            ? `${competitionResults.weather} (Live: ${weatherError.substring(0,25)}...)`
-            : `N/A (Live: ${weatherError.substring(0,25)}...)`;
+            ? `${competitionResults.weather} (${liveErrorMsg})`
+            : `N/A (${liveErrorMsg})`;
     }
     // If location was not specified for API call
     if (weatherError === "Location not specified.") {
@@ -216,8 +221,118 @@ useEffect(() => {
     return competitionResults?.weather || 'N/A'; // Default fallback
   };
 
+  const handleDownloadReport = async () => {
+    if (!competitionResults) return;
+    setIsDownloadingReport(true);
+    setError(null); // Clear previous errors
+
+    try {
+      // Prepare data to send to the server
+      // You might want to send more specific data than the entire competitionResults
+      // or transform it as needed by your server's HTML template.
+      console.log("Sending this Data to PDF:", competitionResults);
+      const {
+        competitionName,
+        competitionDate: competitionDateValue,
+        competitionStartTime: competitionStartTimeValue,
+        location,
+        status,
+        weather,
+        totalPigeonsOverall,
+        results,
+        expectedPigeonsPerParticipant,
+        coverImage, // Assuming coverImage now holds the URL.
+        description,
+      } = competitionResults;
+      const reportData = {
+        reportTitleUrdu: "مقابلے کی تفصیلی رپورٹ",
+        competition: {
+          name: competitionName,
+          nameUrdu: competitionName, // Assuming same name for now
+          date: competitionDateValue,
+          location,
+          locationUrdu: location, // Assuming same location for now
+          startTime: competitionStartTimeValue,
+          status,
+          statusUrdu: status, // Assuming same status for now
+          coverImageUrl: coverImage,  // Include cover image URL
+          description: description,
+          descriptionUrdu: description,
+          expectedPigeonsPerParticipant: expectedPigeonsPerParticipant, // Add this line
+        },
+        participants: results.map(p => ({ // Send only necessary fields for results
+          rank: p.rank,
+          participantName: p.participantName,
+          numberOfPigeonsRecorded: p.numberOfPigeonsRecorded,
+          flights: p.flights.map(f => ({ pigeonNumber: f.pigeonNumber, arrivalTime: f.arrivalTime })),
+          totalFlightDurationSeconds: p.totalFlightDurationSeconds,
+        })),
+        // Add any other specific data your server-side HTML template needs
+        topFinishers: [
+          firstPlaceByHighestTime ? { participantName: firstPlaceByHighestTime.participantName, rank: firstPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(firstPlaceByHighestTime.totalFlightDurationSeconds) } : null,
+          secondPlaceByHighestTime ? { participantName: secondPlaceByHighestTime.participantName, rank: secondPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(secondPlaceByHighestTime.totalFlightDurationSeconds) } : null,
+          thirdPlaceByHighestTime ? { participantName: thirdPlaceByHighestTime.participantName, rank: thirdPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(thirdPlaceByHighestTime.totalFlightDurationSeconds) } : null,
+        ].filter(Boolean), // Filter out nulls if any top finishers are missing
+      };
+
+      if (reportData.competition.name === undefined) {
+        console.error("Competition name is undefined in reportData!");
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/pdf/generate-report-pdf`, { // Use API_BASE_URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reportData),
+      });
+
+      if (!response.ok) {
+        // Try to get error message from server response
+        let errorMessage = `Failed to generate PDF: ${response.status} ${response.statusText}`;
+        try {
+            const errorData = await response.json(); // Assuming server sends JSON error
+            errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+            // If response is not JSON, use the text
+            const textError = await response.text();
+            errorMessage = textError || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // Use a dynamic filename, sanitizing the competition name
+      const safeCompName = (competitionResults.competitionName || 'Competition').replace(/[^\w\s]/gi, '').replace(/\s+/g, '_');
+      a.download = `Report_${safeCompName}.pdf`;
+      document.body.appendChild(a); // Required for Firefox
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url); // Clean up
+
+    } catch (err) {
+      console.error("Error downloading PDF report:", err);
+      setError(err.message || "An unknown error occurred while generating the report.");
+      // Display an error message to the user (e.g., using a toast notification or an alert)
+      // alert(`Error downloading report: ${err.message}`);
+    } finally {
+      setIsDownloadingReport(false);
+    }
+  };
+
+  // Get primary color from CSS variables for PDF styling
+  const [varPrimaryColorRGB, setVarPrimaryColorRGB] = useState([41, 128, 185]); // Default blue
+  useEffect(() => {
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color-rgb').trim();
+    if (primaryColor) setVarPrimaryColorRGB(primaryColor.split(',').map(Number));
+  }, []);
+
   if (loading) {
-    return <div className="loading-message">Loading competition details...</div>;
+    return <div className="loading-message">Loading competition details...</div>; // Keep this for initial load
   }
   if (error) {
     return <div className="error-message">Error: {error}</div>;
@@ -305,6 +420,17 @@ useEffect(() => {
         <h1 dir="auto">{competitionName}</h1>
       </div>
 
+      {/* Download Report Button Section */}
+      <div className="report-actions-container">
+        <button
+          onClick={handleDownloadReport}
+          className="download-report-button"
+          disabled={isDownloadingReport || loading || !competitionResults}
+        >
+          {isDownloadingReport ? 'Generating PDF...' : <><FaFilePdf /> Download Report</>}
+        </button>
+      </div>
+
       {/* 3. Competition Stats Block */}
       <section className="competition-stats-block">
         <div className="stat-item">
@@ -375,52 +501,54 @@ useEffect(() => {
               <thead>
                 <tr>
                   <th className="sticky-col sticky-col-rank">Rank</th>
-                  <th className="sticky-col sticky-col-participant">Participant</th> {/* Header for Avatar + Name */}
-                  <th className="sticky-col sticky-col-pigeons-returned">Pigeons Returned</th>
-                  {pigeonColumnHeaders}
+                  <th className="sticky-col sticky-col-participant">Participant</th>{/* Header for Avatar + Name - Ensure no space/newline after this comment */}
+                  <th className="sticky-col sticky-col-pigeons-returned">Pigeons Returned</th>{/* Ensure no space/newline after this th before pigeonColumnHeaders */}
+                  {pigeonColumnHeaders}{/* Ensure no space/newline after pigeonColumnHeaders before next th */}
                   <th className="sticky-col sticky-col-total-time">Total Time</th>
-                  {/* Add more headers if needed, e.g., for specific pigeon details */}
+                  {/* Add more headers if needed, e.g., for specific pigeon details. */}
                 </tr>
               </thead>
-              {/* Use AnimatePresence to handle enter/exit animations if rows are added/removed */}
-              <AnimatePresence>
-                {originalResults.map((result) => ( // Use originalResults for official rank order
-                  <motion.tr
-                    key={result.participantId} // Stable key is crucial for layout animations
-                    layout // Enables layout animation
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5, type: "spring" }}
-                    className={result.rank <= 3 ? `top-rank-row rank-row-${result.rank}` : ''}
-                  >
-                    <td className={`sticky-col sticky-col-rank rank-cell rank-${result.rank}`}>
-                      <span className="rank-badge">{result.rank}</span>
-                    </td>
-                    <td className="sticky-col sticky-col-participant participant-info-cell">
-                      <img src={result.participantPictureUrl || '/images/default-avatar.png'} alt={result.participantName} className="participant-avatar" />
-                      <span className="participant-name-text" dir="auto">{result.participantName}</span> {/* Already had dir="auto", good! */}
-                    </td>
-                    <td className="sticky-col sticky-col-pigeons-returned">{result.numberOfPigeonsRecorded} / {expectedPigeonsPerParticipant || 'N/A'}</td>
-                    {expectedPigeonsPerParticipant > 0 && Array.from({ length: expectedPigeonsPerParticipant }, (_, i) => {
-                      const pigeonNumber = i + 1;
-                      const flight = result.flights.find(f => f.pigeonNumber === pigeonNumber);
-                      return (
-                        <td key={`pigeon-cell-${result.participantId}-${pigeonNumber}`} className="pigeon-arrival-time-cell">
-                          {flight ? (
-                            <span 
-                              className={`time-chip ${animatedChips[`${result.participantId}-${flight.pigeonNumber}`] ? 'animate-highlight' : ''}`}
-                            >
-                              {new Date(flight.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                            </span>
-                          ) : '-'}
-                        </td>
-                      );
-                    })}
-                    <td className="sticky-col sticky-col-total-time total-time-cell">{formatDuration(result.totalFlightDurationSeconds)}</td>
-                  </motion.tr>
-                ))}
-              </AnimatePresence>
+              <tbody>
+                {/* Use AnimatePresence to handle enter/exit animations if rows are added/removed */}
+                <AnimatePresence>
+                  {originalResults.map((result) => ( // Use originalResults for official rank order
+                    <motion.tr
+                      key={result.participantId} // Stable key is crucial for layout animations
+                      layout // Enables layout animation
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.5, type: "spring" }}
+                      className={result.rank <= 3 ? `top-rank-row rank-row-${result.rank}` : ''}
+                    >
+                      <td className={`sticky-col sticky-col-rank rank-cell rank-${result.rank}`}>
+                        <span className="rank-badge">{result.rank}</span>
+                      </td>
+                      <td className="sticky-col sticky-col-participant participant-info-cell">
+                        <img src={result.participantPictureUrl || '/images/default-avatar.png'} alt={result.participantName} className="participant-avatar" />
+                        <span className="participant-name-text" dir="auto">{result.participantName}</span> {/* Already had dir="auto", good! */}
+                      </td>
+                      <td className="sticky-col sticky-col-pigeons-returned">{result.numberOfPigeonsRecorded} / {expectedPigeonsPerParticipant || 'N/A'}</td>
+                      {expectedPigeonsPerParticipant > 0 && Array.from({ length: expectedPigeonsPerParticipant }, (_, i) => {
+                        const pigeonNumber = i + 1;
+                        const flight = result.flights.find(f => f.pigeonNumber === pigeonNumber);
+                        return (
+                          <td key={`pigeon-cell-${result.participantId}-${pigeonNumber}`} className="pigeon-arrival-time-cell">
+                            {flight ? (
+                              <span 
+                                className={`time-chip ${animatedChips[`${result.participantId}-${flight.pigeonNumber}`] ? 'animate-highlight' : ''}`}
+                              >
+                                {new Date(flight.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                              </span>
+                            ) : '-'}
+                          </td>
+                        );
+                      })}
+                      <td className="sticky-col sticky-col-total-time total-time-cell">{formatDuration(result.totalFlightDurationSeconds)}</td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
+              </tbody>
             </table>
           </div>
         ) : (

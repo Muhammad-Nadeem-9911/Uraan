@@ -699,3 +699,37 @@
 .top-finisher-card.third-place .finisher-rank-icon {
   color: #b0712d; /* Darker Bronze */
 }
+
+/* Download Report Button */
+.report-actions-container {
+  display: flex;
+  justify-content: center; /* Center the button */
+  margin-top: 1rem; /* Space above the button container */
+  margin-bottom: 2rem; /* Space below the button container */
+}
+
+.download-report-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-shadow: var(--box-shadow-soft);
+}
+
+.download-report-button:hover:not(:disabled) {
+  background-color: var(--primary-color-dark);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.download-report-button:disabled {
+  background-color: var(--neutral-color-light, #ccc);
+  color: var(--neutral-color-dark, #666);
+  cursor: not-allowed;
+  box-shadow: none;
+}

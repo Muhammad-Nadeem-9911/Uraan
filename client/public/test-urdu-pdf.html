@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jsPDF Urdu Font Test</title>
+    <!-- Load jsPDF from a CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
+        pre { background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>jsPDF Urdu Font Test</h1>
+    <p>This page attempts to load 'NotoNastaliqUrdu-Regular.ttf' from the './fonts/' directory (relative to this HTML file) and render a test string.</p>
+    <p>Make sure <strong>NotoNastaliqUrdu-Regular.ttf</strong> is placed inside a <strong>fonts</strong> subfolder within your project's <strong>public</strong> directory.</p>
+    <button onclick="generateTestPdf()">Generate Test PDF with Urdu</button>
+    <hr>
+    <h3>Console Output:</h3>
+    <pre id="consoleOutput"></pre>
+
+    <script>
+        const consoleOutputDiv = document.getElementById('consoleOutput');
+        function logToPage(message) {
+            console.log(message); // Also log to browser console
+            if (typeof message === 'object') {
+                consoleOutputDiv.textContent += JSON.stringify(message, null, 2) + '\n';
+            } else {
+                consoleOutputDiv.textContent += message + '\n';
+            }
+        }
+
+        async function generateTestPdf() {
+            consoleOutputDiv.textContent = ""; // Clear previous logs
+            logToPage("generateTestPdf() called.");
+
+            const { jsPDF } = window.jspdf; // Get jsPDF from the global scope
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            const urduFontName = "NotoNastaliqUrdu";
+            const urduTestString = "اردو ٹیسٹ"; // Your test string: "Urdu Test"
+
+            try {
+                logToPage(`Attempting to fetch font from: ./fonts/NotoNastaliqUrdu-Regular.ttf`);
+                // The path must be relative to where the HTML file is served from.
+                // If test-urdu-pdf.html is in public/, and fonts are in public/fonts/, then './fonts/' is correct.
+                const fontFileResponse = await fetch('./fonts/NotoNastaliqUrdu-Regular.ttf');
+
+                if (!fontFileResponse.ok) {
+                    throw new Error(`Font file not found. Status: ${fontFileResponse.status} ${fontFileResponse.statusText}. Path: ${fontFileResponse.url}`);
+                }
+                logToPage("Font file fetched successfully.");
+
+                const fontBuffer = await fontFileResponse.arrayBuffer();
+                logToPage(`Font buffer size: ${fontBuffer.byteLength} bytes.`);
+
+                // Convert ArrayBuffer to Base64 string
+                const fontBase64 = btoa(new Uint8Array(fontBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+                logToPage("Font buffer converted to Base64.");
+
+                // Add font to jsPDF
+                doc.addFileToVFS(`${urduFontName}-Regular.ttf`, fontBase64);
+                logToPage(`Font added to VFS: ${urduFontName}-Regular.ttf`);
+                doc.addFont(`${urduFontName}-Regular.ttf`, urduFontName, 'normal');
+                logToPage(`Font registered in jsPDF with name: ${urduFontName}, style: normal`);
+
+                logToPage("Current jsPDF font list:");
+                logToPage(doc.getFontList());
+
+                if (!doc.getFontList()[urduFontName]) {
+                     const errorMsg = `ERROR: Font '${urduFontName}' not found in jsPDF's list after attempting to add it!`;
+                     logToPage(errorMsg);
+                     alert(errorMsg);
+                     doc.text(errorMsg, 10,10);
+                     doc.save("error-font-not-in-list.pdf");
+                     return;
+                }
+                logToPage(`Font '${urduFontName}' confirmed in jsPDF's list.`);
+
+                // --- Test 1: Standard font, standard ASCII text ---
+                doc.setFont("helvetica", "normal"); // Or times, courier
+                doc.setFontSize(12);
+                doc.text("Hello World (Helvetica)", 15, 20);
+                logToPage("Rendered 'Hello World (Helvetica)' at 15, 20");
+
+                // --- Test 2: Urdu font, standard ASCII text ---
+                doc.setFont(urduFontName, 'normal');
+                doc.setFontSize(20);
+                doc.text("Test ABC (NotoNastaliqUrdu)", 15, 40, { lang: 'en' }); // Use lang: 'en' for ASCII
+                logToPage(`Rendered 'Test ABC (NotoNastaliqUrdu)' at 15, 40 with font ${urduFontName}`);
+
+                // --- Test 3: Standard font, Urdu text ---
+                doc.setFont("helvetica", "normal"); // Or times, courier
+                doc.setFontSize(20);
+                // Note: Helvetica won't render Urdu correctly, but we want to see if *anything* appears (e.g., boxes, garbage)
+                doc.text(urduTestString + " (Helvetica)", doc.internal.pageSize.getWidth() - 15, 60, { align: 'right', lang: 'ur' });
+                logToPage(`Rendered Urdu string with Helvetica at page_width-15, 60`);
+
+                // --- Test 4: Urdu font, Urdu text (Your original test) ---
+                doc.setFont(urduFontName, 'normal');
+                doc.setFontSize(20);
+                const textX = doc.internal.pageSize.getWidth() - 15; // Right align with margin
+                const textY = 80; // Adjusted Y position
+                logToPage(`Attempting to render Urdu text: "${urduTestString}" at x=${textX}, y=${textY} with font ${urduFontName}`);
+                doc.text(urduTestString + " (NotoNastaliqUrdu)", textX, textY, { align: 'right', lang: 'ur' });
+                logToPage("Urdu text rendering command executed.");
+                doc.save("minimal-urdu-test.pdf");
+                logToPage("PDF saved as minimal-urdu-test.pdf");
+
+            } catch (error) {
+                logToPage("ERROR during PDF generation:");
+                logToPage(error.stack || error.message);
+                alert("Error during PDF generation. Check console on page. Error: " + error.message);
+                // Try to generate a PDF with the error message
+                try {
+                    doc.setFont("helvetica"); // Fallback font
+                    doc.text("Error loading/rendering Urdu font:", 10, 10);
+                    doc.text(error.message, 10, 20, {maxWidth: doc.internal.pageSize.getWidth() - 20});
+                    doc.save("error-urdu-test.pdf");
+                } catch (pdfError) {
+                    logToPage("Could not even save error PDF: " + pdfError.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
