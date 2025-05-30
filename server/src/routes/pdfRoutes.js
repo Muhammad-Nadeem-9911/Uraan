@@ -366,11 +366,26 @@ function generateReportHTML(data) {
     };
 
     const getFinisherIcon = (rank) => {
-        if (rank === 1) return '👑'; // Crown U+1F451
-        if (rank === 2) return '🥈'; // Silver Medal U+1F948
-        if (rank === 3) return '🥉'; // Bronze Medal U+1F949
-        if (rank > 3 && rank <=10) return '🏅'; // Sports Medal U+1F3C5 for other top ranks
-        return ''; // No icon for ranks beyond a certain point or if rank is not typical
+        // SVGs are set to use currentColor for fill, so CSS will determine their color.
+        // style="vertical-align: middle;" helps with alignment if used inline with text,
+        // and width/height set to 1em allows scaling with font-size.
+        const svgAttributes = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 1em; height: 1em; vertical-align: middle;"`;
+
+        if (rank === 1) { // Crown
+            return `
+            <svg ${svgAttributes}>
+                <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1V18h14v1z"/>
+            </svg>`;
+        }
+        // For ranks 2, 3, and 4-10, use a generic medal/award icon.
+        // The color will be determined by CSS classes: .rank-2, .rank-3, or default for others.
+        if (rank === 2 || rank === 3 || (rank > 3 && rank <= 10)) { // Medal/Award Icon
+            return `
+            <svg ${svgAttributes}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15l-3.76 2.27 1-4.38-3.24-2.82 4.51-.39L12 7.18l1.49 4.08 4.51.39-3.24 2.82 1 4.38L12 17z"/>
+            </svg>`;
+        }
+        return ''; // No icon for other ranks or if rank is not typical
     };
 
     // Structured competition details

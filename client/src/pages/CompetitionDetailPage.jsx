@@ -199,9 +199,21 @@ useEffect(() => {
         })),
         // Add any other specific data your server-side HTML template needs
         topFinishers: [
-          firstPlaceByHighestTime ? { participantName: firstPlaceByHighestTime.participantName, rank: firstPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(firstPlaceByHighestTime.totalFlightDurationSeconds) } : null,
-          secondPlaceByHighestTime ? { participantName: secondPlaceByHighestTime.participantName, rank: secondPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(secondPlaceByHighestTime.totalFlightDurationSeconds) } : null,
-          thirdPlaceByHighestTime ? { participantName: thirdPlaceByHighestTime.participantName, rank: thirdPlaceByHighestTime.rank, totalFlightDurationDisplay: formatDuration(thirdPlaceByHighestTime.totalFlightDurationSeconds) } : null,
+          firstPlaceByHighestTime ? { 
+            participantName: firstPlaceByHighestTime.participantName, 
+            rank: firstPlaceByHighestTime.rank, 
+            totalFlightDurationSeconds: firstPlaceByHighestTime.totalFlightDurationSeconds 
+          } : null,
+          secondPlaceByHighestTime ? { 
+            participantName: secondPlaceByHighestTime.participantName, 
+            rank: secondPlaceByHighestTime.rank, 
+            totalFlightDurationSeconds: secondPlaceByHighestTime.totalFlightDurationSeconds 
+          } : null,
+          thirdPlaceByHighestTime ? { 
+            participantName: thirdPlaceByHighestTime.participantName, 
+            rank: thirdPlaceByHighestTime.rank, 
+            totalFlightDurationSeconds: thirdPlaceByHighestTime.totalFlightDurationSeconds 
+          } : null,
         ].filter(Boolean), // Filter out nulls if any top finishers are missing
       };
 
