@@ -10,11 +10,9 @@ WORKDIR /usr/src/app
 # if the error is specifically about creating this directory on a read-only fs,
 # this won't help, but if it's a transient issue or a problem with apt-get itself, it might.
 RUN apt-get update -y && \
-    apt-get install -y apt-utils && \
-    mkdir -p /var/lib/apt/lists/partial && \
-    apt-get update -y && \
-    apt-get install -y \
-    chromium-browser \
+    apt-get install -y --no-install-recommends \
+    apt-utils \
+    chromium \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -30,8 +28,7 @@ RUN apt-get update -y && \
     libxfixes3 \
     libxrandr2 \
     libxss1 \
-    libxtst6 \
-    --no-install-recommends && \
+    libxtst6 && \
     # Clean up apt lists to reduce final image size
     rm -rf /var/lib/apt/lists/*
 
