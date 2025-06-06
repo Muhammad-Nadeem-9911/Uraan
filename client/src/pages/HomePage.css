@@ -48,18 +48,32 @@
 
 .status-tag {
   display: inline-block;
-  padding: 0.25em 0.6em;
-  font-size: 0.85em;
-  font-weight: bold;
-  border-radius: var(--border-radius-sm);
+  padding: 0.35em 0.75em; /* Adjusted for balanced padding */
+  font-size: 0.75rem;    /* Slightly smaller and fixed for consistency */
+  font-weight: 600;      /* Semi-bold for a more refined look */
+  line-height: 1.3;      /* Ensures text fits well */
+  border-radius: var(--border-radius-md); /* Softer, more modern rounded corners */
   color: white;
+  text-align: center;
   background-color: var(--text-color-secondary); /* Default status color */
 }
 
-.status-tag.status-upcoming { background-color: #2196f3; /* Blue for upcoming */ }
-.status-tag.status-ongoing { background-color: #4caf50; /* Green for ongoing */ }
-.status-tag.status-completed { background-color: #f44336; /* Red for completed */ }
-.status-tag.status-live { background-color: var(--accent-color); color: var(--text-color-primary); } /* Yellow for live */
+.status-tag.status-upcoming {
+  background-color: #2196f3; /* Blue for upcoming */
+  color: white; /* Explicitly set for clarity and independence */
+}
+.status-tag.status-ongoing {
+  background-color: #4caf50; /* Green for ongoing */
+  color: white; /* Explicitly set */
+}
+.status-tag.status-completed {
+  background-color: #f44336; /* Red for completed */
+  color: white; /* Explicitly set */
+}
+.status-tag.status-live {
+  background-color: var(--accent-color); /* Yellow for live */
+  color: var(--text-color-primary); /* Dark text for good contrast on yellow */
+}
 
 /* Filters Section */
 .filters-section {
@@ -321,4 +335,36 @@
     /* Aim for 3 cards */
     grid-template-columns: repeat(auto-fill, minmax(calc(33.33% - 1rem), 1fr)); /* 1rem is approx 2/3 of 1.5rem gap */
   }
+}
+
+/* --- Competition Card Hover Effect --- */
+/* Apply a class like "competition-interactive-card" to the Link or main clickable wrapper
+   of your competition card component displayed in .competitions-grid-layout. */
+
+.competition-interactive-card { /* Base state for transition */
+  display: block; /* Good for layout if the card itself is an <a> tag */
+  text-decoration: none; /* Remove underline by default if it's a link */
+  color: inherit; /* Ensure text color consistency */
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  /* The card component itself should define its own background, padding, base shadow, border-radius etc.
+     These styles here primarily focus on the hover interaction. */
+}
+
+.competition-interactive-card:hover {
+  /* For the card link itself, prevent global a:hover styles */
+  color: inherit !important; /* Maintain inherited color, override global a:hover color */
+  text-decoration: none !important; /* Ensure no underline from global a:hover */
+  transform: translateY(-4px); /* Aesthetic lift */
+  /* Use an existing shadow variable or define one. Example: */
+  box-shadow: var(--box-shadow-medium, 0 6px 12px rgba(0,0,0,0.1));
+}
+
+/*
+  Ensure nested links within the hovered card do not adopt
+  the global a:hover styles (golden color and underline).
+*/
+.competition-interactive-card:hover a {
+  color: var(--primary-color) !important; /* Reset to default link color, override global a:hover color */
+  text-decoration: none !important; /* Ensure no underline from global a:hover */
+  border-bottom: none !important;   /* Explicitly remove any bottom border */
 }

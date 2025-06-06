@@ -1,53 +1,37 @@
 /* d:/Uraan/client/src/components/competitions/CompetitionCardSkeleton.css */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
 .competition-card-skeleton {
-  /* Mimic CompetitionCard's glassmorphism, but simpler and opaque */
-  background: rgba(224, 224, 224, 0.3); /* Lighter grey, slightly transparent */
+  background-color: var(--background-color-light, #fff);
   border-radius: var(--border-radius-lg, 12px);
-  /* backdrop-filter: blur(5px); */ /* Optional: lighter blur for skeleton */
-  /* -webkit-backdrop-filter: blur(5px); */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: auto; /* Or match CompetitionCard height if fixed: approx 300px-350px depending on content */
-  min-height: 280px; /* Approximate height of a card */
+  box-shadow: var(--box-shadow-soft, 0 4px 12px rgba(0, 0, 0, 0.08));
+  overflow: hidden; /* Important for shimmer effect and rounded corners */
+  width: 100%; /* Ensure it takes the grid cell width */
+  position: relative; /* For shimmer pseudo-element */
 }
 
 .skeleton-image {
   width: 100%;
-  height: 160px; /* Match CompetitionCard image height or adjust */
-  background: linear-gradient(to right, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
-  background-size: 2000px 100%; /* Large background for shimmer effect */
-  animation: shimmer 1.5s linear infinite;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background-color: var(--neutral-color-light, #e0e0e0);
+  position: relative;
+  overflow: hidden;
 }
 
 .skeleton-content {
-  padding: 1rem 1.25rem;
-  flex-grow: 1;
+  padding: 1rem;
 }
 
 .skeleton-line {
   height: 1em;
-  margin-bottom: 0.75em;
+  background-color: var(--neutral-color-light, #e0e0e0);
   border-radius: var(--border-radius-sm, 4px);
-  background: linear-gradient(to right, #e0e0e0 8%, #f0f0f0 18%, #e0e0e0 33%);
-  background-size: 2000px 100%;
-  animation: shimmer 1.5s linear infinite;
+  margin-bottom: 0.75rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .skeleton-line.title {
   width: 70%;
-  height: 1.3em; /* Match card title size */
+  height: 1.5em; /* Taller for title */
 }
 
 .skeleton-line.short {
@@ -55,10 +39,40 @@
 }
 
 .skeleton-line.medium {
-  width: 80%;
+  width: 85%;
 }
 
 .skeleton-line.footer {
   width: 30%;
-  margin-top: auto; /* Push to bottom if content area allows */
+  height: 1.2em;
+  margin-top: 1rem; /* Add some space before the footer line */
+  margin-bottom: 0; /* No margin at the very bottom */
+}
+
+/* Shimmer Animation */
+.skeleton-image::after,
+.skeleton-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0; /* Start at the left edge */
+  height: 100%;
+  width: 100%; /* Cover the element */
+  background: linear-gradient(
+    90deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.4) 50%, /* Shimmer color, adjust opacity as needed */
+    transparent 80%
+  );
+  animation: shimmer 1.5s infinite linear;
+  transform: translateX(-100%); /* Start off-screen to the left */
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%); /* Moves the gradient across */
+  }
 }

@@ -2,6 +2,7 @@ const express = require('express');
 const puppeteer = require('puppeteer-core'); // Use puppeteer-core
 const fs = require('fs');
 const path = require('path');
+const os = require('os'); // Import the 'os' module
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ try {
 // --- Translations ---
 const translations = {
     ur: {
-        reportTitle: "رپورٹ",
+        reportTitle: "مقابلے کی تفصیلی رپورٹ", // Using the more specific Urdu title
         generatedAtLabel: "رپورٹ تیار کرنے کی تاریخ",
         competitionDetailsTitle: "مقابلے کی تفصیلات",
         dateLabel: "تاریخ",
@@ -53,7 +54,7 @@ const translations = {
         coverImageAlt: "مقابلے کا سرورق"
     },
     en: {
-        reportTitle: "Report",
+        reportTitle: "Detailed Competition Report", // Using the more specific English title
         generatedAtLabel: "Report Generated At",
         competitionDetailsTitle: "Competition Details",
         dateLabel: "Date",
@@ -82,16 +83,30 @@ const translations = {
     }
 };
 
+// Helper function to check for Urdu characters
+function isLikelyUrdu(text) {
+    if (!text || typeof text !== 'string') return false;
+    // This regex matches common Urdu/Arabic script characters.
+    // Adjust if more specific script detection (e.g., distinguishing Arabic from Urdu) is needed.
+    const urduPattern = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+    return urduPattern.test(text);
+}
+
 // --- HTML Template Function ---
 function generateReportHTML(data) {
     // Destructure data with defaults to prevent errors if fields are missing
     const { competition = {}, participants = [] } = data;
 
     // --- Language Determination (Crucial: Use raw input for this decision) ---
-    // Log the value of competition.nameUrdu to debug
-    console.log('Debugging Language Determination: competition.nameUrdu =', competition.nameUrdu);
-    // Refined condition: check if it's a string and not empty after trim
-    const reportLanguage = (competition.nameUrdu && typeof competition.nameUrdu === 'string' && competition.nameUrdu.trim() !== '') ? 'ur' : 'en';
+    let lang = 'en'; // Default to English
+    if (competition.nameUrdu && typeof competition.nameUrdu === 'string' && competition.nameUrdu.trim() !== '') {
+        lang = 'ur';
+    } else if (competition.name && isLikelyUrdu(competition.name)) {
+        // If nameUrdu is not provided or empty, but the primary 'name' field appears to be Urdu
+        lang = 'ur';
+    }
+    const reportLanguage = lang;
+    console.log('Debugging Language Determination: competition.nameUrdu =', competition.nameUrdu, '; competition.name =', competition.name);
     console.log('Debugging Language Determination: reportLanguage determined as =', reportLanguage);
 
     const t = translations[reportLanguage]; // Get the translation set for the chosen language
@@ -114,7 +129,8 @@ function generateReportHTML(data) {
     const rawCompetitionStartTime = competition.startTime; // Get the raw start time for duration calculation
 
     // Effective display values based on language
-    const effectiveReportTitle = t.reportTitle;
+    // The main report title should now come directly from the server's translations based on the determined language.
+    const pageHeaderTitle = t.reportTitle; 
     const generatedAtDisplay = new Date().toLocaleString(locale, { dateStyle: 'full', timeStyle: 'medium' });
 
     const mainCompetitionTitleDisplay = reportLanguage === 'ur' ? 
@@ -409,7 +425,7 @@ function generateReportHTML(data) {
             <!-- Wrapper for all content intended for the first page -->
             <div class="first-page-wrapper">
                 <div class="report-meta-header">
-                    <p class="report-main-title">${effectiveReportTitle}</p>
+                    <p class="report-main-title">${pageHeaderTitle}</p>
                     <p class="report-generation-date">${t.generatedAtLabel}: ${generatedAtDisplay}</p>
                 </div>
 
@@ -528,8 +544,27 @@ router.post('/generate-report-pdf', async (req, res) => {
     try {
         const reportData = req.body; // Data from your React app
 
+        // Determine a sensible default executable path based on the OS
+        // if PUPPETEER_EXECUTABLE_PATH is not set.
+        let defaultExecutablePath = '';
+        if (process.platform === 'win32') {
+            // Common paths for Chrome on Windows.
+            const chromePaths = [
+                path.join(process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)', 'Google', 'Chrome', 'Application', 'chrome.exe'),
+                path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Google', 'Chrome', 'Application', 'chrome.exe'),
+                // Add Edge path as a fallback, as it's Chromium-based
+                path.join(process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)', 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+                path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Microsoft', 'Edge', 'Application', 'msedge.exe')
+            ];
+            defaultExecutablePath = chromePaths.find(p => fs.existsSync(p)) || '';
+        } else if (process.platform === 'darwin') { // macOS
+            defaultExecutablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+        } else { // Linux and other OSes
+            defaultExecutablePath = '/usr/bin/chromium-browser'; // Standard path for system-installed Chromium
+        }
+
         const launchOptions = {
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser', // Standard path for system-installed Chromium
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || defaultExecutablePath,
             headless: true,
             args: [
                 '--no-sandbox',
@@ -540,6 +575,11 @@ router.post('/generate-report-pdf', async (req, res) => {
                 // '--single-process'      // Consider if other args don't resolve issues, but can impact performance
             ]
         };
+
+        if (!launchOptions.executablePath) {
+            console.error("Puppeteer executablePath could not be determined. Please set PUPPETEER_EXECUTABLE_PATH or ensure Chrome/Chromium is in a standard location.");
+            throw new Error("Chromium executable not found. Please set PUPPETEER_EXECUTABLE_PATH environment variable.");
+        }
 
         const browser = await puppeteer.launch({
             ...launchOptions

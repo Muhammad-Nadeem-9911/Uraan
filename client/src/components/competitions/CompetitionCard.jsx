@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import './CompetitionCard.css'; // We'll create this CSS file next
-// import placeholderImage from '../../assets/images/pigeon-placeholder.jpg'; // Example placeholder
+
 
 const CompetitionCard = ({ competition }) => {
   const { _id, name, date, location, status, coverPhotoUrl } = competition; // Changed coverImage to coverPhotoUrl
@@ -14,13 +14,22 @@ const CompetitionCard = ({ competition }) => {
   });
 
   // Fallback image if coverImage is not provided
-  const displayImage = coverPhotoUrl || 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60'; // Changed coverImage to coverPhotoUrl
+  // The gradient fallback will be handled directly in the style prop below,
+  // similar to CompetitionDetailPage.jsx
 
   return (
     <div ref={ref} className={`competition-card ${inView ? 'is-visible' : 'is-hidden'}`}>
-      <Link to={`/competition/${_id}`} className="card-link-wrapper">
+      <Link to={`/competition/${_id}`} className="card-link-wrapper competition-interactive-card">
         <div className="card-image-container">
-          <img src={displayImage} alt={`${name} cover`} className="card-image" />
+          <div
+            className="card-image"
+            style={{
+              backgroundImage: competition.coverPhotoUrl // Use competition.coverPhotoUrl here
+                ? `url(${competition.coverPhotoUrl})`
+                : 'linear-gradient(135deg, #232526 0%, #414345 100%)', // Default dark gradient
+            }}
+            aria-label={`${name} cover`} // Add aria-label for accessibility
+          ></div>
           <div className="card-image-overlay">
             {/* Play button if it has a video - future enhancement */}
             {/* <span className="play-button">▶</span> */}
@@ -31,7 +40,7 @@ const CompetitionCard = ({ competition }) => {
           <p className="card-info"><strong>Date:</strong> {new Date(date).toLocaleDateString()}</p>
           <p className="card-info"><strong>Location:</strong> {location || 'N/A'}</p>
           <div className="card-footer">
-            <span className={`card-status-tag status-${status?.toLowerCase().replace(/\s+/g, '-')}`}>{status}</span>
+            <span className={`status-tag status-${status?.toLowerCase().replace(/\s+/g, '-')}`}>{status}</span>
             {/* Could add a "View Details" arrow or text here */}
           </div>
         </div>

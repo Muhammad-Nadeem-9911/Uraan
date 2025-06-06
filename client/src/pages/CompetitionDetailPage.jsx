@@ -174,8 +174,13 @@ useEffect(() => {
         // Potentially, Urdu specific fields from competitionResults:
         // nameUrdu, locationUrdu, statusUrdu, descriptionUrdu (if they exist on competitionResults)
       } = competitionResults;
+
+      // Determine the primary language for the report title based on competition name
+      const hasUrduName = competitionResults.nameUrdu && competitionResults.nameUrdu.trim() !== '';
+      const reportMainTitle = hasUrduName ? "مقابلے کی تفصیلی رپورٹ" : "Detailed Competition Report";
+
       const reportData = {
-        reportTitleUrdu: "مقابلے کی تفصیلی رپورٹ",
+        reportTitle: reportMainTitle, // Use a dynamic title with a generic key
         competition: {
           name: competitionName,
           nameUrdu: competitionResults.nameUrdu, // Use actual nameUrdu from results, or undefined

@@ -2,8 +2,12 @@
 
 .competition-detail-page {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem 2rem; /* Default padding for larger screens */
+  margin: 0 auto; /* Center the page content */ 
+  /* No top margin here, will be handled by header or specific sections */
+}
+.competition-detail-page .competition-header {
+  margin-top: 20px; /* Adds space above the hero section */
+  padding: 0; /* Remove padding from the main header container */
 }
 
 /* Loading and Error Messages (can be globalized) */
@@ -77,7 +81,6 @@
 .download-report-icon-button:disabled {
   color: #bbb;
   cursor: not-allowed;
-  background-color: transparent;
   background-color: rgba(0, 0, 0, 0.2); /* Disabled background */
   transform: none;
   opacity: 0.6;
@@ -96,9 +99,9 @@
 /* 2. Hero/Header Section */
 .competition-header {
   position: relative;
-  height: 45vh; /* Adjusted height */
-  min-height: 280px; /* Adjusted min-height */
-  max-height: 400px; /* Adjusted max-height */
+  height: 60vh; /* Further increased height */
+  min-height: 350px; /* Further increased min-height */
+  max-height: 550px; /* Further increased max-height */
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   margin-bottom: 2rem; /* Keep space before stats block */
@@ -107,7 +110,7 @@
 
 .header-background-image {
   position: absolute;
-  top: 0;
+  top: 0; /* Ensure it starts from the very top of its parent */
   left: 0;
   width: 100%;
   height: 100%;
